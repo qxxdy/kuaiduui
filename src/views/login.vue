@@ -62,7 +62,6 @@
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 
@@ -72,8 +71,8 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "root",
+        password: "xudengyu",
         rememberMe: false,
         code: "",
         uuid: ""
