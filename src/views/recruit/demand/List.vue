@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="岗位名称" prop="postName">
+      <el-form-item label="需求名称" prop="postName">
         <el-input
           v-model="queryParams.postName"
-          placeholder="请输入岗位名称"
+          placeholder="请输入需求名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="岗位类别" prop="postType">
-        <el-select v-model="queryParams.postType" placeholder="岗位类别" clearable>
+      <el-form-item label="需求类别" prop="postType">
+        <el-select v-model="queryParams.postType" placeholder="需求类别" clearable>
           <el-option
             v-for="dict in dict.type.sys_post_type"
             :key="dict.value"
@@ -36,37 +36,40 @@
     </el-form>
 
     <el-table
-      :data="tableData"
+      :data="demandList"
       style="width: 100%"
     >
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="岗位名称">
+            <el-form-item label="需求名称">
               <span>{{ props.row.postName }}</span>
             </el-form-item>
             <el-form-item label="招聘人数">
               <span>{{ props.row.postHc }}</span>
             </el-form-item>
-            <el-form-item label="岗位描述">
+            <el-form-item label="需求描述">
               <span>{{ props.row.postDesc }}</span>
             </el-form-item>
             <el-divider direction="vertical"></el-divider>
-            <el-form-item label="岗位要求">
+            <el-form-item label="需求要求">
               <span>{{ props.row.postDuty }}</span>
             </el-form-item>
           </el-form>
         </template>
       </el-table-column>
       <el-table-column
-        label="岗位名称"
+        label="需求名称"
         prop="postName"
       >
       </el-table-column>
       <el-table-column
-        label="岗位类别"
+        label="需求类别"
         prop="postType"
       >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_post_type" :value="scope.row.postType"/>
+        </template>
       </el-table-column>
       <el-table-column
         label="招聘人数"
@@ -77,6 +80,9 @@
         label="状态"
         prop="status"
       >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+        </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -91,7 +97,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- 添加或修改岗位对话框 -->
+    <!-- 添加或修改需求对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="需求名称" prop="postName">
@@ -148,7 +154,7 @@
 </style>
 
 <script>
-import { getDemand, updateDemand, addDemand } from '@/api/recruit/demand'
+import { listDemand, getDemand, updateDemand, addDemand } from '@/api/recruit/demand'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type'],
@@ -173,8 +179,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 岗位表格数据
-      postList: [],
+      // 需求表格数据
+      demandList: [],
       // 弹出层标题
       title: '',
       // 是否显示弹出层
@@ -192,10 +198,10 @@ export default {
       // 表单校验
       rules: {
         postName: [
-          { required: true, message: '岗位名称不能为空', trigger: 'blur' }
+          { required: true, message: '需求名称不能为空', trigger: 'blur' }
         ],
         postType: [
-          { required: true, message: '岗位编码不能为空', trigger: 'blur' }
+          { required: true, message: '需求编码不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -204,11 +210,11 @@ export default {
     this.getList()
   },
   methods: {
-    /** 查询岗位列表 */
+    /** 查询需求列表 */
     getList() {
       this.loading = true
-      listPost(this.queryParams).then(response => {
-        this.postList = response.rows
+      listDemand(this.queryParams).then(response => {
+        this.demandList = response.rows
         this.total = response.total
         this.loading = false
       })
@@ -224,6 +230,9 @@ export default {
         postId: undefined,
         postName: undefined,
         postType: undefined,
+        postHc:1,
+        postDesc:undefined,
+        postDuty:undefined,
         status: '0'
       }
       this.resetForm('form')
@@ -242,7 +251,7 @@ export default {
     handleAdd() {
       this.reset()
       this.open = true
-      this.title = '添加岗位'
+      this.title = '添加需求'
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -251,7 +260,7 @@ export default {
       getDemand(postId).then(response => {
         this.form = response.data
         this.open = true
-        this.title = '修改岗位'
+        this.title = '修改需求'
       })
     },
     /** 提交按钮 */
