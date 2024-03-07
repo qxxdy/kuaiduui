@@ -35,6 +35,30 @@
       </el-form-item>
     </el-form>
 
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >新增
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+        >导出
+        </el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
+
     <el-table
       :data="demandList"
       style="width: 100%"
@@ -101,13 +125,13 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="需求名称" prop="postName">
-          <el-input v-model="form.postName" placeholder="请输入需求名称"/>
+          <el-input :disabled="true" v-model="form.postName" placeholder="请输入需求名称"/>
         </el-form-item>
         <el-form-item label="需求人数" prop="postHc">
-          <el-input v-model="form.postName" placeholder="请输入需求人数"/>
+          <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
         </el-form-item>
         <el-form-item label="需求类别" prop="postType">
-          <el-radio-group v-model="form.status">
+          <el-radio-group v-model="form.postType">
             <el-radio
               v-for="dict in dict.type.sys_post_type"
               :key="dict.value"
@@ -116,6 +140,15 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
+
+        <el-form-item label="需求描述" prop="postDesc">
+          <el-input v-model="form.postDesc" placeholder="请输入需求描述" type="textarea"/>
+        </el-form-item>
+
+        <el-form-item label="需求要求" prop="postDuty">
+          <el-input v-model="form.postDuty" placeholder="请输入需求要求" type="textarea"/>
+        </el-form-item>
+
         <el-form-item label="需求状态" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio
@@ -200,8 +233,17 @@ export default {
         postName: [
           { required: true, message: '需求名称不能为空', trigger: 'blur' }
         ],
+        postHc: [
+          { required: true, message: '需求人数不能为空', trigger: 'blur' }
+        ],
+        postDesc: [
+          { required: true, message: '需求描述不能为空', trigger: 'blur' }
+        ],
+        postDuty: [
+          { required: true, message: '需求要求不能为空', trigger: 'blur' }
+        ],
         postType: [
-          { required: true, message: '需求编码不能为空', trigger: 'blur' }
+          { required: true, message: '需求累呗不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -229,7 +271,7 @@ export default {
       this.form = {
         postId: undefined,
         postName: undefined,
-        postType: undefined,
+        postType: '1',
         postHc:1,
         postDesc:undefined,
         postDuty:undefined,

@@ -9,18 +9,17 @@ export function listDemand(query) {
   })
 }
 
-export function getDemand(query) {
+export function getDemand(postId) {
   return request({
-    url: '/recruit/demand/list',
+    url: '/recruit/demand/'+postId,
     method: 'get',
-    params: query
   })
 }
 
 // 新增字典类型
-export function addType(data) {
+export function updateDemand(data) {
   return request({
-    url: '/system/dict/type',
+    url: '/recruit/demand/update',
     method: 'post',
     data: data
   })
