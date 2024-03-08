@@ -35,8 +35,8 @@ export default {
   },
   data() {
     return {
-      title: 'kwaidu zhaopin',
-      logo: logoImg
+      title: 'KWAIDU ZHAOPIN',
+      // logo: logoImg
     }
   }
 }

@@ -143,6 +143,16 @@
         <el-form-item label="岗位编码" prop="postCode">
           <el-input v-model="form.postCode" placeholder="请输入编码名称"/>
         </el-form-item>
+        <el-form-item label="岗位类别" prop="postType">
+          <el-radio-group v-model="form.postType">
+            <el-radio
+              v-for="dict in dict.type.sys_post_type"
+              :key="dict.value"
+              :label="dict.value"
+            >{{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="岗位顺序" prop="postSort">
           <el-input-number v-model="form.postSort" controls-position="right" :min="0"/>
         </el-form-item>
@@ -212,6 +222,9 @@ export default {
         postCode: [
           { required: true, message: '岗位编码不能为空', trigger: 'blur' }
         ],
+        postType: [
+          { required: true, message: '岗位类别不能为空', trigger: 'blur' }
+        ],
         postSort: [
           { required: true, message: '岗位顺序不能为空', trigger: 'blur' }
         ]
@@ -242,6 +255,7 @@ export default {
         postId: undefined,
         postCode: undefined,
         postName: undefined,
+        postType: undefined,
         postSort: 0,
         status: '0',
         remark: undefined

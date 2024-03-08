@@ -19,16 +19,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="需求状态" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_normal_disable"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -100,14 +90,6 @@
         prop="postHc"
       >
       </el-table-column>
-      <el-table-column
-        label="状态"
-        prop="status"
-      >
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -128,17 +110,22 @@
       </el-table-column>
     </el-table>
 
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
+
     <!-- 添加或修改需求对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="需求名称" prop="postName">
           <el-input :disabled="true" v-model="form.postName" placeholder="请输入需求名称"/>
         </el-form-item>
-        <el-form-item label="需求人数" prop="postHc">
-          <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
-        </el-form-item>
         <el-form-item label="需求类别" prop="postType">
-          <el-radio-group v-model="form.postType">
+          <el-radio-group :disabled="true" v-model="form.postType">
             <el-radio
               v-for="dict in dict.type.sys_post_type"
               :key="dict.value"
@@ -146,6 +133,42 @@
             >{{ dict.label }}
             </el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="需求人数" prop="postHc">
+          <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
+        </el-form-item>
+
+
+        <el-form-item label="需求描述" prop="postDesc">
+          <el-input v-model="form.postDesc" placeholder="请输入需求描述" type="textarea"/>
+        </el-form-item>
+
+        <el-form-item label="需求要求" prop="postDuty">
+          <el-input v-model="form.postDuty" placeholder="请输入需求要求" type="textarea"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+
+    <!--新增-->
+    <el-dialog :title="title" :visible.sync="open2" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="需求名称" prop="postName">
+          <el-select v-model="form.postId" placeholder="请选择需求名称">
+            <el-option
+              v-for="post in noHcPostList"
+              :key="post.postId"
+              :label="post.postName"
+              :value="post.postId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="需求人数" prop="postHc">
+          <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
         </el-form-item>
 
         <el-form-item label="需求描述" prop="postDesc">
@@ -155,20 +178,9 @@
         <el-form-item label="需求要求" prop="postDuty">
           <el-input v-model="form.postDuty" placeholder="请输入需求要求" type="textarea"/>
         </el-form-item>
-
-        <el-form-item label="需求状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{ dict.label }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm2">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -194,25 +206,12 @@
 </style>
 
 <script>
-import { listDemand, getDemand, updateDemand, addDemand } from '@/api/recruit/demand'
+import { getDemand, listDemand, listNoHcPost, updateDemand,addDemand } from '@/api/recruit/demand'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type'],
   data() {
     return {
-      tableData: [{
-        postId: '12987122',
-        postName: '人力资源',
-        postType: '职能',
-        postHc: '3',
-        postDesc: '1、深度参与集团组织、人才管理的关键战略的形成与输出；\n' +
-          '2、通过对重点管理政策深入细致的梳理和分析，结合行业内外领先实践，制定和迭代适合集团整体的组织人才管理策略，协同人力资源管理专家共同支持业务发展；\n' +
-          '3、定义集团各项业务的组织、人才管理核心指标并跟进迭代，通过数据分析发掘关键问题，提供解决方案。',
-        postDuty: '1、博士研究生，成绩优异，对产业互联网实践充满热情；\n' +
-          '2、学习能力强，有全局视野和结构化思维，擅长认识和解决复杂问题，有突破性地实现关键目标的经验；\n' +
-          '3、具备优秀的责任感、同理心，具备良好的沟通能力，人际交往能力突出，团队合作能力强；\n' +
-          '4、对商业问题有较好的理解，具备构建抽象概念模型/数学模型的经验，对数据有敏感性。'
-      }],
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -221,10 +220,12 @@ export default {
       total: 0,
       // 需求表格数据
       demandList: [],
+      noHcPostList: [],
       // 弹出层标题
       title: '',
       // 是否显示弹出层
-      open: false,
+      open: false, // 修改
+      open2: false, // 新增
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -237,20 +238,14 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        postName: [
-          { required: true, message: '需求名称不能为空', trigger: 'blur' }
-        ],
         postHc: [
-          { required: true, message: '需求人数不能为空', trigger: 'blur' }
+          { required: true, message: '需求人数不能为空', trigger: 'blur' },
         ],
         postDesc: [
           { required: true, message: '需求描述不能为空', trigger: 'blur' }
         ],
         postDuty: [
           { required: true, message: '需求要求不能为空', trigger: 'blur' }
-        ],
-        postType: [
-          { required: true, message: '需求累呗不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -259,6 +254,11 @@ export default {
     this.getList()
   },
   methods: {
+    getNoHcPostList() {
+      listNoHcPost().then(response => {
+        this.noHcPostList = response.data
+      })
+    },
     /** 查询需求列表 */
     getList() {
       this.loading = true
@@ -279,9 +279,9 @@ export default {
         postId: undefined,
         postName: undefined,
         postType: '1',
-        postHc:1,
-        postDesc:undefined,
-        postDuty:undefined,
+        postHc: 1,
+        postDesc: undefined,
+        postDuty: undefined,
         status: '0'
       }
       this.resetForm('form')
@@ -298,8 +298,8 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
+      this.getNoHcPostList()
+      this.open2 = true
       this.title = '添加需求'
     },
     /** 修改按钮操作 */
@@ -322,12 +322,6 @@ export default {
               this.open = false
               this.getList()
             })
-          } else {
-            addDemand(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
-              this.open = false
-              this.getList()
-            })
           }
         }
       })
@@ -337,7 +331,21 @@ export default {
       this.download('system/post/export', {
         ...this.queryParams
       }, `post_${new Date().getTime()}.xlsx`)
-    }
+    },
+    /** 提交按钮 */
+    submitForm2: function() {
+      this.$refs['form'].validate(valid => {
+        if (valid) {
+          if (this.form.postId != undefined) {
+            addDemand(this.form).then(response => {
+              this.$modal.msgSuccess('添加成功')
+              this.open2 = false
+              this.getList()
+            })
+          }
+        }
+      })
+    },
   }
 }
 </script>
