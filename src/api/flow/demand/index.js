@@ -17,28 +17,18 @@ export function getDemand(id) {
   })
 }
 
-// 新增需求审批
-export function addDemand(data) {
+// 通过需求审批
+export function accessDemand(id) {
   return request({
-    url: '/flow/demand',
-    method: 'post',
-    data: data
+    url: '/flow/demand/access/' + id,
+    method: 'post'
   })
 }
 
-// 修改需求审批
-export function updateDemand(data) {
+// 驳回需求审批
+export function denyDemand(id) {
   return request({
-    url: '/flow/demand',
-    method: 'put',
-    data: data
-  })
-}
-
-// 删除需求审批
-export function delDemand(id) {
-  return request({
-    url: '/flow/demand/' + id,
-    method: 'delete'
+    url: '/flow/demand/deny/' + id,
+    method: 'post'
   })
 }

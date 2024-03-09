@@ -103,7 +103,7 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="流转类型" align="center" prop="flowType">
+      <el-table-column label="审批状态" align="center" prop="flowType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_flowable_status" :value="scope.row.flowType"/>
         </template>
@@ -115,14 +115,12 @@
             type="text"
             icon="el-icon-edit"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['flow:demand:remove']"
           >审批</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['flow:demand:remove']"
           >驳回</el-button>
         </template>
       </el-table-column>

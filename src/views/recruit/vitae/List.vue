@@ -72,7 +72,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="专业名称"
+        label="专业类别"
         prop="personEduMajor"
       >
         <template slot-scope="scope">
