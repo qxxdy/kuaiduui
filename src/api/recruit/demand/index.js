@@ -16,6 +16,13 @@ export function listNoHcPost(){
   })
 }
 
+export function listUser(){
+  return request({
+    url: '/recruit/demand/getListUser',
+    method: 'get',
+  })
+}
+
 export function getDemand(postId) {
   return request({
     url: '/recruit/demand/'+postId,

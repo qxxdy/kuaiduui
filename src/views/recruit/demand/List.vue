@@ -157,7 +157,17 @@
     <!--新增-->
     <el-dialog :title="title" :visible.sync="open2" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="需求名称" prop="postName">
+        <el-form-item label="审批人" prop="endUser">
+          <el-select v-model="form.endUser" placeholder="请选择审批人">
+            <el-option
+              v-for="user in userList"
+              :key="user.userId"
+              :label="user.userName"
+              :value="user.userId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="需求名称" prop="postId">
           <el-select v-model="form.postId" placeholder="请选择需求名称">
             <el-option
               v-for="post in noHcPostList"
@@ -206,7 +216,8 @@
 </style>
 
 <script>
-import { getDemand, listDemand, listNoHcPost, updateDemand,addDemand } from '@/api/recruit/demand'
+import { getDemand, listDemand, listNoHcPost, updateDemand,listUser } from '@/api/recruit/demand'
+import {addDemand} from '@/api/flow/demand'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type'],
@@ -221,6 +232,7 @@ export default {
       // 需求表格数据
       demandList: [],
       noHcPostList: [],
+      userList:[], // 审批人列表【除了当前用户的所有可用用户】
       // 弹出层标题
       title: '',
       // 是否显示弹出层
@@ -238,6 +250,12 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        endUser: [
+          { required: true, message: '待办人不能为空', trigger: 'blur' }
+        ],
+        postId: [
+          { required: true, message: '需求名称不能为空', trigger: 'blur' }
+        ],
         postHc: [
           { required: true, message: '需求人数不能为空', trigger: 'blur' },
         ],
@@ -259,6 +277,11 @@ export default {
         this.noHcPostList = response.data
       })
     },
+    getUserList(){
+      listUser().then(response => {
+        this.userList = response.data
+      })
+    },
     /** 查询需求列表 */
     getList() {
       this.loading = true
@@ -271,11 +294,13 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
+      this.open2 = false
       this.reset()
     },
     // 表单重置
     reset() {
       this.form = {
+        endUser: undefined,
         postId: undefined,
         postName: undefined,
         postType: '1',
@@ -298,7 +323,9 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+      this.reset()
       this.getNoHcPostList()
+      this.getUserList()
       this.open2 = true
       this.title = '添加需求'
     },
@@ -338,7 +365,7 @@ export default {
         if (valid) {
           if (this.form.postId != undefined) {
             addDemand(this.form).then(response => {
-              this.$modal.msgSuccess('添加成功')
+              this.$modal.msgSuccess('申请成功，等待审批通过')
               this.open2 = false
               this.getList()
             })
