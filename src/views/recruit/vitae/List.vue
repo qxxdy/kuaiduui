@@ -89,9 +89,26 @@
         prop="postName"
       >
       </el-table-column>
+      <el-table-column
+        label="流转类别"
+        prop="flowType"
+      >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.flow_recruit_status" :value="scope.row.flowType"/>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="text" @click="showInfo(scope.row)">查看简历</el-button>
+          <el-dropdown v-if="scope.row.flowType==='1'" size="mini"
+                       @command="(command) => handleCommand(command, scope.row)"
+          >
+            <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handleRecruitAccess" icon="el-icon-key">Access</el-dropdown-item>
+              <el-dropdown-item command="handleRecruitPool" icon="el-icon-circle-check">Pool</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -137,6 +154,50 @@
       </el-descriptions>
     </el-dialog>
 
+    <el-dialog title="Access" :visible.sync="open" width="600px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="vitaeId">
+              <el-input v-if="true" v-model="form.vitaeId"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="一面" prop="userName1">
+              <el-select v-model="form.userName1" placeholder="一面">
+                <el-option
+                  v-for="user in userList"
+                  :key="user.userId"
+                  :label="user.userName"
+                  :value="user.userId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="二面" prop="userName2">
+              <el-select v-model="form.userName2" placeholder="二面">
+                <el-option
+                  v-for="user in userList"
+                  :key="user.userId"
+                  :label="user.userName"
+                  :value="user.userId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -155,10 +216,12 @@
 </style>
 
 <script>
+import { listUser } from '@/api/system/user'
 import { listVitae } from '@/api/recruit/vitae'
+import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'flow_recruit_status'],
   data() {
     return {
       // 遮罩层
@@ -175,13 +238,40 @@ export default {
         pageSize: 10
       },
       dialog: false,
-      desc: {}
+      desc: {},
+      // 是否显示弹出层
+      open: false,
+      // 表单参数
+      form: {},
+      rules: {
+        userName1: [
+          { required: true, message: '用户名称不能为空', trigger: 'blur' },
+          { min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur' }
+        ],
+        userName2: [
+          { required: true, message: '用户名称不能为空', trigger: 'blur' },
+          { min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur' }
+        ]
+      },
+      userList: null
     }
   },
   created() {
     this.getList()
   },
   methods: {
+    // 取消按钮
+    cancel() {
+      this.open = false
+      this.reset()
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        userName1: undefined,
+        userName2: undefined
+      }
+    },
     /** 查询需求列表 */
     getList() {
       this.loading = true
@@ -227,6 +317,45 @@ export default {
     resetQuery() {
       this.resetForm('queryForm')
       this.handleQuery()
+    },
+    handleRecruitAccess(row) {
+      const ids = row.id || this.ids
+      this.$modal.confirm('是否确认通过简历编号为"' + ids + '"的数据项？').then(function() {
+        return accByVitaeId(ids)
+      }).then(() => {
+        this.getList()
+        this.$modal.msgSuccess('Access')
+      }).catch(() => {
+      })
+    },
+    // 更多操作触发
+    handleCommand(command, row) {
+      switch (command) {
+        case 'handleRecruitAccess':
+          this.handleUserList()
+          this.open=true
+          // this.handleRecruitAccess(row)
+          break
+        case 'handleRecruitPool':
+
+          this.handleRecruitPool(row)
+          break
+        default:
+          break
+      }
+    },
+    handleUserList(){
+      listUser().then(res=>this.userList=res.rows)
+    },
+    handleRecruitPool(row) {
+      const ids = row.id || this.ids
+      this.$modal.confirm('是否确认落选简历编号为"' + ids + '"的数据项？').then(function() {
+        return poolRecruitByVitaeId(ids)
+      }).then(() => {
+        this.getList()
+        this.$modal.msgSuccess('Pool')
+      }).catch(() => {
+      })
     }
   }
 }

@@ -14,7 +14,7 @@
       <el-form-item label="流转类型" prop="flowType">
         <el-select v-model="queryParams.flowType" placeholder="请选择流转类型" clearable>
           <el-option
-            v-for="dict in dict.type.sys_flowable_status"
+            v-for="dict in dict.type.flow_demand_status"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
@@ -57,7 +57,7 @@
       </el-table-column>
       <el-table-column label="审批状态" align="center" prop="flowType">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_flowable_status" :value="scope.row.flowType"/>
+          <dict-tag :options="dict.type.flow_demand_status" :value="scope.row.flowType"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -88,7 +88,7 @@
 import { listSelfDemand,repeatDemand,recallDemand} from '@/api/flow/demand'
 export default {
   name: 'List',
-  dicts: ['sys_flowable_status'],
+  dicts: ['flow_demand_status','flow_demand_status'],
   data() {
     return {
       // 遮罩层
