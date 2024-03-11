@@ -165,14 +165,14 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleRecruitAccess(scope.row)"
-              >Access
+              >通过
               </el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleRecruitPool(scope.row)"
-              >Pool
+              >终止
               </el-button>
             </template>
           </el-table-column>
@@ -351,7 +351,7 @@ export default {
     /** 审批按钮操作 */
     handleAccess(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认发布需求审批编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('确认发布该需求？').then(function() {
         return accessDemand(ids)
       }).then(() => {
         this.getList()
@@ -362,7 +362,7 @@ export default {
     /** 删除按钮操作 */
     handleDeny(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认驳回需求审批编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('确认驳回该需求？').then(function() {
         return denyDemand(ids)
       }).then(() => {
         this.getList()
@@ -372,21 +372,21 @@ export default {
     },
     handleRecruitAccess(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认通过简历编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('确认通过本轮面试？').then(function() {
         return accessRecruit(ids)
       }).then(() => {
         this.getList()
-        this.$modal.msgSuccess('Access')
+        this.$modal.msgSuccess('本轮面试已通过')
       }).catch(() => {
       })
     },
     handleRecruitPool(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认落选简历编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('确认终止面试流程？').then(function() {
         return poolRecruit(ids)
       }).then(() => {
         this.getList()
-        this.$modal.msgSuccess('Pool')
+        this.$modal.msgSuccess('面试流程已终止')
       }).catch(() => {
       })
     },

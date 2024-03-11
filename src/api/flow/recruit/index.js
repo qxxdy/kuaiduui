@@ -2,10 +2,11 @@ import request from '@/utils/request'
 
 
 // 通过招聘审批
-export function accByVitaeId(id) {
+export function accByVitaeId(data) {
   return request({
-    url: '/flow/recruit/accByVitaeId/' + id,
-    method: 'post'
+    url: '/flow/recruit/accByVitaeId',
+    method: 'post',
+    data:data
   })
 }
 
@@ -21,6 +22,14 @@ export function poolRecruitByVitaeId(id) {
 export function accessRecruit(id) {
   return request({
     url: '/flow/recruit/acc/' + id,
+    method: 'post'
+  })
+}
+
+// 通过招聘审批
+export function accRepeatByVitaeId(id) {
+  return request({
+    url: '/flow/recruit/accRepeatByVitaeId/' + id,
     method: 'post'
   })
 }

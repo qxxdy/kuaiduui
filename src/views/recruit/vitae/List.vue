@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="求职者" prop="personName">
-        <el-input
-          v-model="queryParams.personName"
-          placeholder="请输入求职者姓名"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="最高学历" prop="personEduMax">
         <el-select v-model="queryParams.personEduMax" placeholder="最高学历" clearable>
           <el-option
@@ -19,10 +11,30 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="学习形式" prop="personEduForm">
-        <el-select v-model="queryParams.personEduForm" placeholder="学习形式" clearable>
+      <el-form-item label="专业类别" prop="personEduMajor">
+        <el-select v-model="queryParams.personEduMajor" placeholder="专业类别" clearable>
           <el-option
-            v-for="dict in dict.type.vitae_edu_form"
+            v-for="dict in dict.type.vitae_edu_major"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="求职岗位" prop="postName">
+        <el-select v-model="queryParams.postId" placeholder="求职岗位" clearable>
+          <el-option
+            v-for="post in postList"
+            :key="post.postId"
+            :label="post.postName"
+            :value="post.postId"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="流转类别" prop="postName">
+        <el-select v-model="queryParams.flowType" placeholder="流转类别" clearable>
+          <el-option
+            v-for="dict in dict.type.flow_recruit_status"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
@@ -105,8 +117,16 @@
           >
             <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="handleRecruitAccess" icon="el-icon-key">Access</el-dropdown-item>
-              <el-dropdown-item command="handleRecruitPool" icon="el-icon-circle-check">Pool</el-dropdown-item>
+              <el-dropdown-item command="handleRecruitAccess" icon="el-icon-key">通过</el-dropdown-item>
+              <el-dropdown-item command="handleRecruitPool" icon="el-icon-circle-check">终止</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-dropdown v-else-if="scope.row.flowType==='5'" size="mini"
+                       @command="(command) => handleCommand(command, scope.row)"
+          >
+            <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handleRecruitReAccess" icon="el-icon-key">通过</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -166,7 +186,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="一面" prop="userName1">
-              <el-select v-model="form.userName1" placeholder="一面">
+              <el-select v-model="form.recruit1" placeholder="一面">
                 <el-option
                   v-for="user in userList"
                   :key="user.userId"
@@ -180,7 +200,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="二面" prop="userName2">
-              <el-select v-model="form.userName2" placeholder="二面">
+              <el-select v-model="form.recruit2" placeholder="二面">
                 <el-option
                   v-for="user in userList"
                   :key="user.userId"
@@ -219,17 +239,22 @@
 import { listUser } from '@/api/system/user'
 import { listVitae } from '@/api/recruit/vitae'
 import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
+import { listPost } from '@/api/system/post'
+import { accRepeatByVitaeId } from '@/api/flow/recruit'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'flow_recruit_status'],
   data() {
     return {
+      vitaeId:undefined,
       // 遮罩层
       loading: true,
       // 显示搜索条件
       showSearch: true,
       // 需求表格数据
       demandList: [],
+      // 所有岗位列表
+      postList: [],
       // 总条数
       total: 0,
       // 查询参数
@@ -280,6 +305,9 @@ export default {
         this.total = response.total
         this.loading = false
       })
+      listPost().then(response => {
+        this.postList = response.rows
+      })
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -315,16 +343,32 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.queryParams.postId=undefined
+      this.queryParams.flowType=undefined
       this.resetForm('queryForm')
       this.handleQuery()
     },
-    handleRecruitAccess(row) {
-      const ids = row.id || this.ids
-      this.$modal.confirm('是否确认通过简历编号为"' + ids + '"的数据项？').then(function() {
-        return accByVitaeId(ids)
+    // 待出筛》待一面
+    handleRecruitAccess(data) {
+      alert(data.vitaeId)
+      // const ids = row.id || this.ids
+      this.$modal.confirm('确认通过该简历？').then(function() {
+        return accByVitaeId(data)
       }).then(() => {
+        this.reset()
         this.getList()
-        this.$modal.msgSuccess('Access')
+        this.$modal.msgSuccess('该简历已通过初筛')
+      }).catch(() => {
+      })
+    },
+    // 人才库》待一面
+    handleRecruitReAccess(data){
+      this.$modal.confirm('确认捞取该人才？').then(function() {
+        return accByVitaeId(data)
+      }).then(() => {
+        this.reset()
+        this.getList()
+        this.$modal.msgSuccess('该简历已通过初筛')
       }).catch(() => {
       })
     },
@@ -332,8 +376,18 @@ export default {
     handleCommand(command, row) {
       switch (command) {
         case 'handleRecruitAccess':
+          this.vitaeId = row.id
+          alert(this.vitaeId)
           this.handleUserList()
-          this.open=true
+          this.open = true
+          this.reset()
+          // this.handleRecruitAccess(row)
+          break
+        case 'handleRecruitReAccess':
+          this.vitaeId = row.id
+          this.handleUserList()
+          this.open = true
+          this.reset()
           // this.handleRecruitAccess(row)
           break
         case 'handleRecruitPool':
@@ -344,16 +398,22 @@ export default {
           break
       }
     },
-    handleUserList(){
-      listUser().then(res=>this.userList=res.rows)
+    handleUserList() {
+      listUser().then(res => this.userList = res.rows)
+    },
+    submitForm() {
+      this.form.vitaeId=this.vitaeId
+      alert(this.form.vitaeId)
+      this.handleRecruitAccess(this.form)
+      this.open=false
     },
     handleRecruitPool(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认落选简历编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('确认落选该简历？').then(function() {
         return poolRecruitByVitaeId(ids)
       }).then(() => {
         this.getList()
-        this.$modal.msgSuccess('Pool')
+        this.$modal.msgSuccess('该简历已落选')
       }).catch(() => {
       })
     }
