@@ -8,3 +8,10 @@ export function listVitae(vitae) {
     params: vitae
   })
 }
+
+export function listUser(){
+  return request({
+    url: '/recruit/vitae/getListUser',
+    method: 'get',
+  })
+}

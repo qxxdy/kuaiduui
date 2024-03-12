@@ -66,6 +66,14 @@
       style="width: 100%"
     >
       <el-table-column
+        label="证件照"
+        prop="avatar"
+      >
+        <template slot-scope="scope">
+          <el-image style="width: 50px;" :src="scope.row.avatar"></el-image>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="姓名"
         prop="personName"
       >
@@ -174,12 +182,12 @@
       </el-descriptions>
     </el-dialog>
 
-    <el-dialog title="Access" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog title="指定面试官" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item prop="vitaeId">
-              <el-input v-if="true" v-model="form.vitaeId"/>
+              <el-input v-if="false" v-model="form.vitaeId"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -236,17 +244,16 @@
 </style>
 
 <script>
-import { listUser } from '@/api/system/user'
-import { listVitae } from '@/api/recruit/vitae'
+import { listUser, listVitae } from '@/api/recruit/vitae'
 import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 import { listPost } from '@/api/system/post'
-import { accRepeatByVitaeId } from '@/api/flow/recruit'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'flow_recruit_status'],
   data() {
     return {
-      vitaeId:undefined,
+      avatar: undefined,
+      vitaeId: undefined,
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -304,6 +311,11 @@ export default {
         this.demandList = response.rows
         this.total = response.total
         this.loading = false
+        // this.options.img =  +
+        this.demandList.forEach(i => {
+          i.avatar = 'http://localhost' + process.env.VUE_APP_BASE_API + i.avatar
+        })
+        // console.log(this.demandList[0].avatar)
       })
       listPost().then(response => {
         this.postList = response.rows
@@ -343,14 +355,13 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.queryParams.postId=undefined
-      this.queryParams.flowType=undefined
+      this.queryParams.postId = undefined
+      this.queryParams.flowType = undefined
       this.resetForm('queryForm')
       this.handleQuery()
     },
     // 待出筛》待一面
     handleRecruitAccess(data) {
-      alert(data.vitaeId)
       // const ids = row.id || this.ids
       this.$modal.confirm('确认通过该简历？').then(function() {
         return accByVitaeId(data)
@@ -362,7 +373,7 @@ export default {
       })
     },
     // 人才库》待一面
-    handleRecruitReAccess(data){
+    handleRecruitReAccess(data) {
       this.$modal.confirm('确认捞取该人才？').then(function() {
         return accByVitaeId(data)
       }).then(() => {
@@ -377,7 +388,6 @@ export default {
       switch (command) {
         case 'handleRecruitAccess':
           this.vitaeId = row.id
-          alert(this.vitaeId)
           this.handleUserList()
           this.open = true
           this.reset()
@@ -399,13 +409,16 @@ export default {
       }
     },
     handleUserList() {
-      listUser().then(res => this.userList = res.rows)
+      listUser().then(res => this.userList = res.data)
     },
     submitForm() {
-      this.form.vitaeId=this.vitaeId
-      alert(this.form.vitaeId)
+      if (this.form.recruit1===this.form.recruit2){
+        this.$message.error('一二面面试官不可为同一人，请重新选择')
+        return
+      }
+      this.form.vitaeId = this.vitaeId
       this.handleRecruitAccess(this.form)
-      this.open=false
+      this.open = false
     },
     handleRecruitPool(row) {
       const ids = row.id || this.ids
