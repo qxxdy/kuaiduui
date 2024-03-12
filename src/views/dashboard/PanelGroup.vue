@@ -7,9 +7,22 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            访客
+            总员工
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="count.user" :duration="2600" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+        <div class="card-panel-icon-wrapper icon-money">
+          <svg-icon icon-class="password" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            总需求
+          </div>
+          <count-to :start-val="0" :end-val="count.demand" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,35 +33,22 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            消息
+            我的待办
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            金额
-          </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="count.todo" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <svg-icon icon-class="wechat" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            订单
+            已接收简历
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="count.vitae" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -57,15 +57,41 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import {getPanelData} from '@/api/analysis'
 
 export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      count:{
+        user:undefined,
+        vitae:undefined,
+        todo:undefined,
+        demand:undefined
+      }
+    }
+  },
+  created(){
+    this.processData()
+  },
   methods: {
+    processData(){
+      /* "userCount": 7,
+      "vitaeCount": 2,
+        "headCount": 218,
+        "todoCount": 1 */
+      getPanelData().then(res=>{
+        this.count.user=res.data.userCount;
+        this.count.vitae=res.data.vitaeCount;
+        this.count.todo=res.data.todoCount;
+        this.count.demand=res.data.headCount;
+      })
+    },
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
-    }
+    },
   }
 }
 </script>
