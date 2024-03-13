@@ -4,7 +4,7 @@
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+      <line-chart :chart-data="res" />
     </el-row>
 
     <el-row :gutter="32">
@@ -25,7 +25,7 @@
       </el-col>
     </el-row>
 
-    
+
   </div>
 </template>
 
@@ -35,6 +35,7 @@ import LineChart from './dashboard/LineChart'
 import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
 import BarChart from './dashboard/BarChart'
+import {getChartData} from '@/api/analysis'
 
 const lineChartData = {
   newVisitis: {
@@ -64,15 +65,23 @@ export default {
     PieChart,
     BarChart
   },
+  created(){
+    getChartData().then(res=>{
+      this.res.demandList =res.data.demandList
+      this.res.hc =res.data.hc
+      this.res.vitaeCount =res.data.vitaeCount
+    })
+  },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: null,
+      res:{demandList:[],hc:[],vitaeCount:[]}
     }
   },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
-    }
+    },
   }
 }
 </script>
