@@ -14,14 +14,33 @@
 
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
-<!--          <pie-chart/>-->
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
           <bar-chart/>
         </div>
       </el-col>
+
+      <el-col :xs="24" :sm="24" :lg="8">
+        <!--          <pie-chart/>-->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>今日热榜</span>
+          </div>
+          <template v-for="o in hotData">
+            <el-img :src="o.logo"></el-img>
+
+            <el-link
+              :href="o.url"
+              target="_blank"
+              type="primary">
+              {{o.views}}
+              |
+              {{o.title }}
+            </el-link>
+            <el-divider></el-divider>
+
+          </template>
+        </el-card>
+      </el-col>
+
     </el-row>
 
     <!--折线图-->
@@ -42,8 +61,10 @@ import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
 import BarChart from './dashboard/BarChart'
 import { getChartData } from '@/api/analysis'
+import axios from 'axios'
 
 const lineChartData = {
+
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
     actualData: [120, 82, 91, 154, 162, 140, 145]
@@ -77,9 +98,17 @@ export default {
       this.res.hc = res.data.hc
       this.res.vitaeCount = res.data.vitaeCount
     })
+    axios.get("https://luckycola.com.cn/tools/newsHot",{
+      params:{
+        ColaKey:"IxxpeoVEzpHk4M1710400266399VwB2dZQUIr"
+      }
+    }).then(res=>{
+      this.hotData=res.data.data.items.slice(0,3)
+    })
   },
   data() {
     return {
+      hotData:[{ID:null,title:null,url:null}],
       day:new Date(),
       lineChartData: null,
       res: { demandList: [], hc: [], vitaeCount: [] }
