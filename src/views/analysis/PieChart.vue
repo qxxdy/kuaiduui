@@ -1,9 +1,10 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+    <div :class="className" :style="{height:height,width:width}"/>
 </template>
 
 <script>
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
+
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
 
@@ -49,24 +50,36 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
+        title:{text:"23届学生调研样本学历分布"},
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['博士', '硕士', '本科', '其他']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            avoidLabelOverlap: true,
+            label: {
+              show: true,
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: true
+            },
+            name: '23届学生调研样本学历分布',
             type: 'pie',
-            roseType: 'radius',
-            radius: [15, 95],
+            radius: ['40%', '70%'],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 23160, name: '博士' },
+              { value: 3890880, name: '硕士' },
+              { value: 7445940, name: '本科' },
+              { value: 231600, name: '其他' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
