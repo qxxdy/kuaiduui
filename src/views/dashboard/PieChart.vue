@@ -1,11 +1,23 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{height:height,width:width}"/>
 </template>
 
 <script>
-import * as echarts from 'echarts';
-require('echarts/theme/macarons') // echarts theme
+import * as echarts from 'echarts'
 import resize from './mixins/resize'
+import { getRaddarChartData } from '@/api/analysis'
+
+require('echarts/theme/macarons') // echarts theme
+
+let map = [
+  { name: '职能', value: 0 },
+  { name: '技术', value: 0 },
+  { name: '产品', value: 0 },
+  { name: '设计', value: 0 },
+  { name: '其他', value: 0 }
+]
+
+let keys = []
 
 export default {
   mixins: [resize],
@@ -22,6 +34,8 @@ export default {
       type: String,
       default: '300px'
     }
+  },
+  created() {
   },
   data() {
     return {
@@ -43,36 +57,71 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
-      this.chart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          left: 'center',
-          bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
-        },
-        series: [
-          {
-            name: 'WEEKLY WRITE ARTICLES',
-            type: 'pie',
-            roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
-            ],
-            animationEasing: 'cubicInOut',
-            animationDuration: 2600
-          }
-        ]
+      let map = [
+        { name: '职能', value: 0 },
+        { name: '技术', value: 0 },
+        { name: '产品', value: 0 },
+        { name: '设计', value: 0 },
+        { name: '其他', value: 0 }]
+      let keys=[]
+      getRaddarChartData().then(res => {
+        map[0].value = res.data['职能'].postCount
+        map[1].value = res.data['技术'].postCount
+        map[2].value = res.data['产品'].postCount
+        map[3].value = res.data['设计'].postCount
+        map[4].value = res.data['其他'].postCount
+        keys = []
+        map.forEach((k, v) => {
+          keys.push(k)
+        })
+        this.chart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          legend: {
+            left: 'center',
+            bottom: '10',
+            data: keys
+          },
+          series: [
+            {
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: 40,
+                  fontWeight: 'bold'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              name: '职位类别占比',
+              type: 'pie',
+              // roseType: 'radius',
+              radius: ['40%', '70%'],
+              // radius: [15, 95],
+              center: ['50%', '38%'],
+              data: map,
+              // data: [
+              //   { value: 320, name: '职能' },
+              //   { value: 240, name: 'Technology' },
+              //   { value: 149, name: 'Forex' },
+              //   { value: 100, name: 'Gold' },
+              //   { value: 59, name: 'Forecasts' }
+              // ],
+              animationEasing: 'cubicInOut',
+              animationDuration: 2600
+            }
+          ]
+        })
       })
+
     }
   }
 }

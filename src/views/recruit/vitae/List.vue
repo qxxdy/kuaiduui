@@ -246,7 +246,7 @@
 <script>
 import { listUser, listVitae } from '@/api/recruit/vitae'
 import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
-import { listPost } from '@/api/system/post'
+import { listAllPost } from '@/api/system/post'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'flow_recruit_status'],
@@ -317,8 +317,8 @@ export default {
         })
         // console.log(this.demandList[0].avatar)
       })
-      listPost().then(response => {
-        this.postList = response.rows
+      listAllPost().then(response => {
+        this.postList = response.data
       })
     },
     /** 搜索按钮操作 */

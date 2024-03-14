@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function listAllPost() {
+  return request({
+    url: '/system/post/listAllPost',
+    method: 'get'
+  })
+}
+
 // 查询岗位列表
 export function listPost(query) {
   return request({

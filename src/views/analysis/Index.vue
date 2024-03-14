@@ -14,7 +14,7 @@
 
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
-<!--          <pie-chart/>-->
+          <pie-chart/>
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
@@ -36,11 +36,11 @@
 </template>
 
 <script>
-import PanelGroup from './dashboard/PanelGroup'
-import LineChart from './dashboard/LineChart'
-import RaddarChart from './dashboard/RaddarChart'
-import PieChart from './dashboard/PieChart'
-import BarChart from './dashboard/BarChart'
+import PanelGroup from '../dashboard/PanelGroup'
+import LineChart from '../dashboard/LineChart'
+import RaddarChart from '../dashboard/RaddarChart'
+import PieChart from '../dashboard/PieChart'
+import BarChart from '../dashboard/BarChart'
 import { getChartData } from '@/api/analysis'
 
 const lineChartData = {

@@ -6,6 +6,7 @@
 import * as echarts from 'echarts';
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import {getRaddarChartData} from '@/api/analysis'
 
 const animationDuration = 3000
 
@@ -24,6 +25,9 @@ export default {
       type: String,
       default: '300px'
     }
+  },
+  created(){
+
   },
   data() {
     return {
