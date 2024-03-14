@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+
+export function getLoginChartData() {
+  return request({
+    url: '/analysis/index/getLoginChartData',
+    method: 'get'
+  })
+}
+
 // bottom左图数据分析
 export function getRaddarChartData() {
   return request({

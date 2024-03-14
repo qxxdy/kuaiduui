@@ -5,19 +5,9 @@
 <script>
 import * as echarts from 'echarts'
 import resize from './mixins/resize'
-import { getRaddarChartData } from '@/api/analysis'
+import { getLoginChartData } from '@/api/analysis'
 
 require('echarts/theme/macarons') // echarts theme
-
-let map = [
-  { name: '职能', value: 0 },
-  { name: '技术', value: 0 },
-  { name: '产品', value: 0 },
-  { name: '设计', value: 0 },
-  { name: '其他', value: 0 }
-]
-
-let keys = []
 
 export default {
   mixins: [resize],
@@ -57,19 +47,20 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      let map = [
-        { name: '职能', value: 0 },
-        { name: '技术', value: 0 },
-        { name: '产品', value: 0 },
-        { name: '设计', value: 0 },
-        { name: '其他', value: 0 }]
+      let map = []
       let keys=[]
-      getRaddarChartData().then(res => {
+      getLoginChartData().then(res => {
         let keys=Object.keys(res.data)
         for (let i = 0; i < keys.length; i++) {
-          map[i].name=keys[i]
-          map[i].value=res.data[map[i].name].postCount
+          map[i]=res.data[keys[i]]
+          // console.log(map[i])
+          const {userName:name,loginCount:value}=map[i]
+
+          map[i]={name,value}
         }
+
+        // [{userName: 'rd2', loginCount: '2'}]
+        console.log(map)
         keys = []
         map.forEach((k, v) => {
           keys.push(k)
@@ -86,25 +77,18 @@ export default {
           },
           series: [
             {
-              avoidLabelOverlap: false,
               label: {
-                show: false,
-                position: 'center'
+                show: true
               },
               emphasis: {
                 label: {
-                  show: true,
-                  fontSize: 40,
-                  fontWeight: 'bold'
+                  show: true
                 }
-              },
-              labelLine: {
-                show: false
               },
               name: '职位类别占比',
               type: 'pie',
-              // roseType: 'radius',
-              radius: ['40%', '70%'],
+              roseType: 'radius',
+              radius: [20, 140],
               // radius: [15, 95],
               center: ['50%', '38%'],
               data: map,

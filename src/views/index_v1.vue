@@ -14,7 +14,7 @@
 
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
-          <bar-chart/>
+          <pie2-chart/>
         </div>
       </el-col>
 
@@ -44,9 +44,9 @@
     </el-row>
 
     <!--折线图-->
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="res"/>
-    </el-row>
+<!--    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">-->
+<!--      <line-chart :chart-data="res"/>-->
+<!--    </el-row>-->
 
 
 
@@ -59,6 +59,7 @@ import PanelGroup from './dashboard/PanelGroup'
 import LineChart from './dashboard/LineChart'
 import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
+import Pie2Chart from './dashboard/Pie2Chart'
 import BarChart from './dashboard/BarChart'
 import { getChartData } from '@/api/analysis'
 import axios from 'axios'
@@ -90,6 +91,7 @@ export default {
     LineChart,
     RaddarChart,
     PieChart,
+    Pie2Chart,
     BarChart
   },
   created() {
