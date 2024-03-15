@@ -25,8 +25,7 @@
             <span>今日热榜</span>
           </div>
           <template v-for="o in hotData">
-            <el-img :src="o.logo"></el-img>
-
+            <el-avatar size="small" :src="o.logo"></el-avatar>
             <el-link
               :href="o.url"
               target="_blank"
@@ -34,6 +33,7 @@
               {{o.views}}
               |
               {{o.title }}
+              <i class="el-icon-view el-icon--right"></i>
             </el-link>
             <el-divider></el-divider>
 
@@ -102,7 +102,7 @@ export default {
     })
     axios.get("https://luckycola.com.cn/tools/newsHot",{
       params:{
-        ColaKey:"IxxpeoVEzpHk4M1710400266399VwB2dZQUIr"
+        ColaKey:this.ak
       }
     }).then(res=>{
       this.hotData=res.data.data.items.slice(0,3)
@@ -110,6 +110,7 @@ export default {
   },
   data() {
     return {
+      ak:"IxxpeoVEzpHk4M1710400266399VwB2dZQUIr",
       hotData:[{ID:null,title:null,url:null}],
       day:new Date(),
       lineChartData: null,

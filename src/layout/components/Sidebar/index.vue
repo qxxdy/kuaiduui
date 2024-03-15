@@ -11,6 +11,7 @@
                 :active-text-color="settings.theme"
                 :collapse-transition="false"
                 mode="vertical"
+
             >
                 <sidebar-item
                     v-for="(route, index) in sidebarRouters"

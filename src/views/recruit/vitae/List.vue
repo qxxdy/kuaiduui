@@ -11,6 +11,22 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="年龄分布" prop="age">
+        <el-select v-model="queryParams.age" placeholder="年龄分布" clearable>
+          <el-option
+            label="25岁以下"
+            value="25"
+          />
+          <el-option
+            label="25-40"
+            value="40"
+          />
+          <el-option
+            label="40岁以上"
+            value="41"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="专业类别" prop="personEduMajor">
         <el-select v-model="queryParams.personEduMajor" placeholder="专业类别" clearable>
           <el-option
@@ -74,13 +90,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="姓名"
-        prop="personName"
+        label="手机号"
+        prop="personPhone"
       >
       </el-table-column>
       <el-table-column
-        label="手机号"
-        prop="personPhone"
+        label="年龄"
+        prop="age"
       >
       </el-table-column>
       <el-table-column
@@ -153,6 +169,8 @@
       :visible.sync="dialog"
     >
       <el-descriptions :title="desc.title" border>
+        <el-descriptions-item label="姓名">{{ desc.personName }}</el-descriptions-item>
+        <el-descriptions-item label="年龄">{{ desc.age }}</el-descriptions-item>
         <el-descriptions-item label="手机号">{{ desc.personPhone }}</el-descriptions-item>
         <el-descriptions-item label="邮箱">{{ desc.personEmail }}</el-descriptions-item>
         <el-descriptions-item label="现居住地">{{ desc.personAddress }}</el-descriptions-item>
@@ -167,7 +185,6 @@
         <el-descriptions-item label="专业类别">
           <dict-tag :options="dict.type.vitae_edu_major" :value="desc.personEduMajor"/>
         </el-descriptions-item>
-        <el-descriptions-item label="自我评价">{{ desc.personReview }}</el-descriptions-item>
         <el-descriptions-item label="现从事职业">
           <dict-tag :options="dict.type.sys_post_type" :value="desc.intentionNowjob"/>
         </el-descriptions-item>
@@ -179,6 +196,7 @@
         </el-descriptions-item>
         <el-descriptions-item label="现月薪（k）">{{ desc.intentionNowsalary }}</el-descriptions-item>
         <el-descriptions-item label="期望月薪（k）">{{ desc.intentionWillsalary }}</el-descriptions-item>
+        <el-descriptions-item label="自我评价">{{ desc.personReview }}</el-descriptions-item>
       </el-descriptions>
     </el-dialog>
 
@@ -335,6 +353,7 @@ export default {
     showInfo(row) {
       this.dialog = true
       this.desc.title = `[${row.personName}] - 简历`
+      this.desc.personName = row.personName
       this.desc.personPhone = row.personPhone
       this.desc.personEmail = row.personEmail
       this.desc.personAddress = row.personAddress
@@ -352,6 +371,7 @@ export default {
       this.desc.intentionNowsalary = row.intentionNowsalary
       this.desc.intentionWillsalary = row.intentionWillsalary
       this.desc.postName = row.postName
+      this.desc.age = row.age
     },
     /** 重置按钮操作 */
     resetQuery() {

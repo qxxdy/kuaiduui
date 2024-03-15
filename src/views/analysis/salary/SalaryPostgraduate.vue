@@ -5,7 +5,7 @@
 <script>
 import * as echarts from 'echarts';
 require('echarts/theme/macarons') // echarts theme
-import resize from './mixins/resize'
+import resize from '../mixins/resize'
 
 export default {
   mixins: [resize],
@@ -54,7 +54,7 @@ export default {
     },
     setOptions({ hc, vitaeCount,demandList } = {}) {
       this.chart.setOption({
-        title:{text:'23届本科生期望月薪与实际月薪趋势分布'},
+        title:{text:'23届硕士生期望月薪与实际月薪趋势分布'},
         xAxis: {
           data: [
             '5k及以下',
@@ -106,7 +106,7 @@ export default {
           },
           smooth: false,
           type: 'line',
-          data: [2.1,23.8,25.9,21.3,12.4,10.8,1.8,0.5,2.3],
+          data: [0,2.5,9.8,19.1,27.9,23,12.3,2.9,2.5],
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
@@ -126,7 +126,7 @@ export default {
               }
             }
           },
-          data: [10.6,22.6,22.3,18.4,11.5,8.8,2.5,0.7,1.8],
+          data: [1.2,3.1,15.5,21.7,24.2,17.4,13.7,1.9,1.2],
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

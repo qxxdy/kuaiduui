@@ -4,33 +4,32 @@
     <Header/>
     <br>
 
-    <!--互联网、制造业、金融业是硕士生求职TOP3行业-->
+    <!--饼图》互联网、制造业、金融业是硕士生求职TOP3行业-->
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <pie-chart></pie-chart>
     </el-row>
 
 
-
-    <!--折线图-->
+    <!--折线图》23届本科生期望月薪与实际月薪趋势分布-->
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <salary-bachelor></salary-bachelor>
     </el-row>
 
-    <!--折线图-->
+    <!--折线图》23届研究生期望月薪与实际月薪趋势分布-->
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <salary-postgraduate></salary-postgraduate>
     </el-row>
 
-
   </div>
+
 </template>
 
 <script>
-import PanelGroup from '../dashboard/PanelGroup'
+import PanelGroup from '../../dashboard/PanelGroup'
 import SalaryBachelor from './SalaryBachelor'
 import SalaryPostgraduate from './SalaryPostgraduate'
 import PieChart from './PieChart'
-import BarChart from '../dashboard/BarChart'
+import BarChart from '../../dashboard/BarChart'
 import Header from './Header'
 
 export default {
@@ -42,7 +41,7 @@ export default {
     SalaryPostgraduate,
     PieChart,
     BarChart
-  },
+  }
 }
 </script>
 
