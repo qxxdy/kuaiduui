@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+// 面试评价
+export function accScore(data) {
+  return request({
+    url: '/flow/recruit/accScore',
+    method: 'post',
+    data:data
+  })
+}
+
 
 // 通过招聘审批
 export function accByVitaeId(data) {

@@ -122,14 +122,6 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="总面评分" prop="score">
-            <el-input
-              v-model="queryParams2.score"
-              placeholder="请输入总面评分"
-              clearable
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
           <el-form-item label="流转类型" prop="flowType">
             <el-select v-model="queryParams.flowType" placeholder="请选择流转类型" clearable>
               <el-option
@@ -151,7 +143,6 @@
           <el-table-column label="一面面试官" align="center" prop="userName1"/>
           <el-table-column label="二面面试官" align="center" prop="userName2"/>
           <el-table-column label="所求岗位" align="center" prop="postName"/>
-          <el-table-column label="总面评分" align="center" prop="score"/>
           <el-table-column label="流转类型" align="center" prop="flowType">
             <template slot-scope="scope">
               <dict-tag :options="dict.type.flow_recruit_status" :value="scope.row.flowType"/>
@@ -160,20 +151,32 @@
 
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
+
               <el-button
+                v-if="!isRoot"
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
-                @click="handleRecruitAccess(scope.row)"
-              >通过
+                @click="openScoreForm(scope.row)"
+              >面试
               </el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleRecruitPool(scope.row)"
-              >终止
-              </el-button>
+
+              <template v-if="isRoot">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-edit"
+                  @click="handleRecruitAccess(scope.row)"
+                >通过
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="handleRecruitPool(scope.row)"
+                >终止
+                </el-button>
+              </template>
             </template>
           </el-table-column>
         </el-table>
@@ -186,6 +189,46 @@
           @pagination="getList"
         />
 
+        <el-dialog title="开始面试" :visible.sync="open" width="600px" append-to-body>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item prop="vitaeId">
+                  <el-input v-if="false" v-model="form.vitaeId"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="评分" prop="userName1">
+                  <el-select v-model="form.score" placeholder="评分">
+                    <el-option
+                      label="优秀"
+                      value="S"
+                    ></el-option>
+                    <el-option
+                      label="胜任"
+                      value="A"
+                    ></el-option>
+                    <el-option
+                      label="合格"
+                      value="B"
+                    ></el-option>
+                    <el-option
+                      label="落选"
+                      value="D"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
+        </el-dialog>
+
       </el-tab-pane>
 
     </el-tabs>
@@ -193,8 +236,9 @@
 </template>
 
 <script>
-import { listDemand, getDemand, denyDemand, accessDemand } from '@/api/flow/demand'
-import { listRecruit, accessRecruit,poolRecruit } from '@/api/flow/recruit'
+import { accessDemand, denyDemand, listDemand } from '@/api/flow/demand'
+import { accessRecruit, accScore, listRecruit, poolRecruit } from '@/api/flow/recruit'
+import {getInfo} from '@/api/login'
 
 export default {
   name: 'Demand',
@@ -205,6 +249,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      isRoot: false,
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -223,8 +268,8 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
-      // 评分弹出层
-      scoreOpen: false,
+      form: {},
+      vitaeId: null,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -246,8 +291,7 @@ export default {
         recruiter1: null,
         recruiter2: null,
         userName1: null,
-        userName2: null,
-        score: null
+        userName2: null
       },
       queryParams2: {
         pageNum: 1,
@@ -260,15 +304,7 @@ export default {
         userName1: null,
         userName2: null,
         postName: null,
-        flowType: null,
-        score: null
-      },
-      scoreForm: {
-        id: null,
-        vitaeId: null,
-        personName: null,
-        postName: null,
-        score: null
+        flowType: null
       },
       rules: {
         score: [
@@ -278,6 +314,16 @@ export default {
     }
   },
   created() {
+    getInfo().then(res=>{
+      this.isRoot =(res.roles[0]=== 'admin')
+    })
+
+    // console.log(
+    //   JSON.parse(
+    //     JSON.parse(
+    //       sessionStorage.getItem('sessionObj')
+    //     ).data
+    //   ).username)
     this.getList()
   },
   methods: {
@@ -302,34 +348,8 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
-        id: null,
-        initUser: null,
-        endUser: null,
-        flowType: null,
-        postId: null,
-        postHc: null,
-        postDesc: null,
-        postDuty: null,
-        /* flow_recruit */
-        vitaeId: null,
-        perName: null,
-        recruit1: null,
-        recruit2: null,
-        postName: null,
-        userName1: null,
-        userName2: null,
-        score: null
-      }
+      this.form = {}
       this.resetForm('form')
-    },
-    resetScoreForm() {
-      this.scoreForm = {
-        id: null,
-        vitaeId: null,
-        personName: null,
-        postName: null
-      }
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -370,6 +390,29 @@ export default {
       }).catch(() => {
       })
     },
+
+    // 弹出面试评价表单
+    openScoreForm(row) {
+      this.open = true
+      this.vitaeId = row.vitaeId
+      this.reset()
+    },
+
+    submitForm() {
+      this.form.vitaeId = this.vitaeId
+      const data = this.form
+      this.$modal.confirm('确认结束本轮面试？').then(function() {
+        return accScore(data)
+      }).then(() => {
+        this.open = false
+        this.getList()
+        this.$modal.msgSuccess('本轮面试已通过')
+      }).catch(() => {
+      })
+
+    },
+
+    // todo 通过面试
     handleRecruitAccess(row) {
       const ids = row.id || this.ids
       this.$modal.confirm('确认通过本轮面试？').then(function() {
