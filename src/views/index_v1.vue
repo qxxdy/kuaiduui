@@ -18,7 +18,7 @@
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col size="small" :xs="24" :sm="24" :lg="8">
         <!--          <pie-chart/>-->
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -35,8 +35,7 @@
               {{o.title }}
               <i class="el-icon-view el-icon--right"></i>
             </el-link>
-            <el-divider></el-divider>
-
+            <hr>
           </template>
         </el-card>
       </el-col>

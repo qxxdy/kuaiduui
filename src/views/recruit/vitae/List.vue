@@ -126,6 +126,16 @@
       >
       </el-table-column>
       <el-table-column
+        label="一面评价"
+        prop="score1"
+      >
+      </el-table-column>
+      <el-table-column
+        label="二面评价"
+        prop="score2"
+      >
+      </el-table-column>
+      <el-table-column
         label="流转类别"
         prop="flowType"
       >
@@ -136,6 +146,8 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="text" @click="showInfo(scope.row)">查看简历</el-button>
+
+
           <el-dropdown v-if="scope.row.flowType==='1'" size="mini"
                        @command="(command) => handleCommand(command, scope.row)"
           >
@@ -145,6 +157,7 @@
               <el-dropdown-item command="handleRecruitPool" icon="el-icon-circle-check">终止</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+
           <el-dropdown v-else-if="scope.row.flowType==='5'" size="mini"
                        @command="(command) => handleCommand(command, scope.row)"
           >
@@ -153,6 +166,8 @@
               <el-dropdown-item command="handleRecruitReAccess" icon="el-icon-key">通过</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+
+
         </template>
       </el-table-column>
     </el-table>

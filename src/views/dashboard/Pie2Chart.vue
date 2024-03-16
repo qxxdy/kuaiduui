@@ -77,6 +77,7 @@ export default {
           },
           series: [
             {
+
               label: {
                 show: true
               },
@@ -85,7 +86,7 @@ export default {
                   show: true
                 }
               },
-              name: '职位类别占比',
+              name: '登录次数统计',
               type: 'pie',
               roseType: 'radius',
               radius: [20, 140],

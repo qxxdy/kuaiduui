@@ -343,8 +343,8 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.scoreOpen = false
-      this.resetScoreForm()
+      this.open = false
+      this.form()
     },
     // 表单重置
     reset() {

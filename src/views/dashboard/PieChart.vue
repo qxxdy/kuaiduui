@@ -84,6 +84,9 @@ export default {
             bottom: '10',
             data: keys
           },
+          title:{
+            text:'职位类别占比'
+          },
           series: [
             {
               avoidLabelOverlap: false,
