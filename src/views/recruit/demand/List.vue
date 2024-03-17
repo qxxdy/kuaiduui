@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="需求名称" prop="postName">
+      <el-form-item label="岗位名称" prop="postName">
         <el-input
           v-model="queryParams.postName"
-          placeholder="请输入需求名称"
+          placeholder="请输入岗位名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="需求类别" prop="postType">
-        <el-select v-model="queryParams.postType" placeholder="需求类别" clearable>
+      <el-form-item label="岗位类别" prop="postType">
+        <el-select v-model="queryParams.postType" placeholder="岗位类别" clearable>
           <el-option
             v-for="dict in dict.type.sys_post_type"
             :key="dict.value"
@@ -56,29 +56,29 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="需求名称">
+            <el-form-item label="岗位名称">
               <span>{{ props.row.postName }}</span>
             </el-form-item>
             <el-form-item label="招聘人数">
               <span>{{ props.row.postHc }}</span>
             </el-form-item>
-            <el-form-item label="需求描述">
+            <el-form-item label="岗位描述">
               <span>{{ props.row.postDesc }}</span>
             </el-form-item>
             <el-divider direction="vertical"></el-divider>
-            <el-form-item label="需求要求">
+            <el-form-item label="岗位要求">
               <span>{{ props.row.postDuty }}</span>
             </el-form-item>
           </el-form>
         </template>
       </el-table-column>
       <el-table-column
-        label="需求名称"
+        label="岗位名称"
         prop="postName"
       >
       </el-table-column>
       <el-table-column
-        label="需求类别"
+        label="岗位类别"
         prop="postType"
       >
         <template slot-scope="scope">
@@ -121,10 +121,10 @@
     <!-- 添加或修改需求对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="需求名称" prop="postName">
-          <el-input :disabled="true" v-model="form.postName" placeholder="请输入需求名称"/>
+        <el-form-item label="岗位名称" prop="postName">
+          <el-input :disabled="true" v-model="form.postName" placeholder="请输入岗位名称"/>
         </el-form-item>
-        <el-form-item label="需求类别" prop="postType">
+        <el-form-item label="岗位类别" prop="postType">
           <el-radio-group :disabled="true" v-model="form.postType">
             <el-radio
               v-for="dict in dict.type.sys_post_type"
@@ -139,12 +139,12 @@
         </el-form-item>
 
 
-        <el-form-item label="需求描述" prop="postDesc">
-          <el-input v-model="form.postDesc" placeholder="请输入需求描述" type="textarea"/>
+        <el-form-item label="岗位描述" prop="postDesc">
+          <el-input v-model="form.postDesc" placeholder="请输入岗位描述" type="textarea"/>
         </el-form-item>
 
-        <el-form-item label="需求要求" prop="postDuty">
-          <el-input v-model="form.postDuty" placeholder="请输入需求要求" type="textarea"/>
+        <el-form-item label="岗位要求" prop="postDuty">
+          <el-input v-model="form.postDuty" placeholder="请输入岗位要求" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -167,8 +167,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="需求名称" prop="postId">
-          <el-select v-model="form.postId" placeholder="请选择需求名称">
+        <el-form-item label="岗位名称" prop="postId">
+          <el-select v-model="form.postId" placeholder="请选择岗位名称">
             <el-option
               v-for="post in noHcPostList"
               :key="post.postId"
@@ -181,12 +181,12 @@
           <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
         </el-form-item>
 
-        <el-form-item label="需求描述" prop="postDesc">
-          <el-input v-model="form.postDesc" placeholder="请输入需求描述" type="textarea"/>
+        <el-form-item label="岗位描述" prop="postDesc">
+          <el-input v-model="form.postDesc" placeholder="请输入岗位描述" type="textarea"/>
         </el-form-item>
 
-        <el-form-item label="需求要求" prop="postDuty">
-          <el-input v-model="form.postDuty" placeholder="请输入需求要求" type="textarea"/>
+        <el-form-item label="岗位要求" prop="postDuty">
+          <el-input v-model="form.postDuty" placeholder="请输入岗位要求" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
