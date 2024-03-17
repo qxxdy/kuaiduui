@@ -154,7 +154,7 @@ export default {
     /** 重新发起操作 */
     handleRepeat(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认重新发起需求审批编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认重新发起发起该需求审批').then(function() {
         return repeatDemand(ids)
       }).then(() => {
         this.getList()
@@ -165,7 +165,7 @@ export default {
     /** 立即撤回操作 */
     handleRecall(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认撤回需求审批编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认立即撤回该需求审批').then(function() {
         return recallDemand(ids)
       }).then(() => {
         this.getList()
