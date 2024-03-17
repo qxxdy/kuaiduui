@@ -95,6 +95,7 @@
       >
       </el-table-column>
       <el-table-column
+        sortable
         label="年龄"
         prop="age"
       >
@@ -126,11 +127,13 @@
       >
       </el-table-column>
       <el-table-column
+        sortable
         label="一面评价"
         prop="score1"
       >
       </el-table-column>
       <el-table-column
+        sortable
         label="二面评价"
         prop="score2"
       >
