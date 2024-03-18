@@ -20,24 +20,34 @@
 
       <el-col size="small" :xs="24" :sm="24" :lg="8">
         <!--          <pie-chart/>-->
-        <el-card class="box-card">
+        <div class="chart-wrapper">
           <div slot="header" class="clearfix">
             <span>今日热榜</span>
           </div>
           <template v-for="o in hotData">
-            <el-avatar size="small" :src="o.logo"></el-avatar>
+<!--            <el-avatar size="small" :src="o.logo"></el-avatar>-->
             <el-link
               :href="o.url"
               target="_blank"
-              type="primary">
-              {{o.views}}
-              |
-              {{o.title }}
-              <i class="el-icon-view el-icon--right"></i>
+              type="primary"
+            >
+              <template>
+                <el-popover trigger="hover" placement="top">
+                  <p>
+                    {{ o.title }}
+                  </p>
+                  <div slot="reference" class="name-wrapper">
+                    <p size="medium">🔥{{ o.views }} | {{ o.title.substring(0, 10) }}...<i
+                      class="el-icon-view el-icon--right"
+                    ></i></p>
+                  </div>
+                </el-popover>
+              </template>
+
             </el-link>
-            <hr>
+<!--            <hr>-->
           </template>
-        </el-card>
+        </div>
       </el-col>
 
     </el-row>
@@ -46,8 +56,6 @@
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="res"/>
     </el-row>
-
-
 
 
   </div>
@@ -99,19 +107,19 @@ export default {
       this.res.hc = res.data.hc
       this.res.vitaeCount = res.data.vitaeCount
     })
-    axios.get("https://luckycola.com.cn/tools/newsHot",{
-      params:{
-        ColaKey:this.ak
+    axios.get('https://luckycola.com.cn/tools/newsHot', {
+      params: {
+        ColaKey: this.ak
       }
-    }).then(res=>{
-      this.hotData=res.data.data.items.slice(0,3)
+    }).then(res => {
+      this.hotData = res.data.data.items.slice(0, 6)
     })
   },
   data() {
     return {
-      ak:"IxxpeoVEzpHk4M1710400266399VwB2dZQUIr",
-      hotData:[{ID:null,title:null,url:null}],
-      day:new Date(),
+      ak: 'IxxpeoVEzpHk4M1710400266399VwB2dZQUIr',
+      hotData: [{ ID: null, title: null, url: null }],
+      day: new Date(),
       lineChartData: null,
       res: { demandList: [], hc: [], vitaeCount: [] }
     }
