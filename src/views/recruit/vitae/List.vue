@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="手机号" prop="personPhone">
+        <el-input
+          v-model="queryParams.personPhone"
+          placeholder="请输入手机号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="最高学历" prop="personEduMax">
         <el-select v-model="queryParams.personEduMax" placeholder="最高学历" clearable>
           <el-option

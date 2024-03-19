@@ -107,8 +107,8 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            icon="el-icon-view"
+            @click="handleVitae(scope.row)"
           >详情
           </el-button>
         </template>
@@ -199,6 +199,42 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!--简历-->
+    <el-drawer
+      :title="drawerTitle"
+      :visible.sync="open3"
+      direction="rtl"
+      size="50%"
+    >
+      <el-table :data="vitaeList">
+        <el-table-column
+          label="手机号"
+          prop="personPhone"
+        />
+        <el-table-column
+          sortable
+          label="年龄"
+          prop="age"
+        />
+        <el-table-column
+          sortable
+          label="一面评价"
+          prop="score1"
+        />
+        <el-table-column
+          sortable
+          label="二面评价"
+          prop="score2"
+        />
+        <el-table-column label="流转类型" align="center" prop="flowType">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.flow_recruit_status" :value="scope.row.flowType"/>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
+
   </div>
 </template>
 
@@ -221,11 +257,12 @@
 </style>
 
 <script>
-import { getDemand, listDemand, listNoHcPost, updateDemand,listUser } from '@/api/recruit/demand'
-import {addDemand} from '@/api/flow/demand'
+import { getDemand, listDemand, listNoHcPost, listUser, updateDemand } from '@/api/recruit/demand'
+import { addDemand } from '@/api/flow/demand'
+import { getVitaeListByPostId } from '@/api/recruit/vitae'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status'],
   data() {
     return {
       // 遮罩层
@@ -237,12 +274,15 @@ export default {
       // 需求表格数据
       demandList: [],
       noHcPostList: [],
-      userList:[], // 审批人列表【除了当前用户的所有可用用户】
+      userList: [], // 审批人列表【除了当前用户的所有可用用户】
+      vitaeList: [],
+      drawerTitle:null,
       // 弹出层标题
       title: '',
       // 是否显示弹出层
       open: false, // 修改
       open2: false, // 新增
+      open3: false, // 简历drawer
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -262,7 +302,7 @@ export default {
           { required: true, message: '需求名称不能为空', trigger: 'blur' }
         ],
         postHc: [
-          { required: true, message: '需求人数不能为空', trigger: 'blur' },
+          { required: true, message: '需求人数不能为空', trigger: 'blur' }
         ],
         postDesc: [
           { required: true, message: '需求描述不能为空', trigger: 'blur' }
@@ -282,7 +322,7 @@ export default {
         this.noHcPostList = response.data
       })
     },
-    getUserList(){
+    getUserList() {
       listUser().then(response => {
         this.userList = response.data
       })
@@ -300,6 +340,7 @@ export default {
     cancel() {
       this.open = false
       this.open2 = false
+      this.open3 = false
       this.reset()
     },
     // 表单重置
@@ -344,6 +385,14 @@ export default {
         this.title = '修改需求'
       })
     },
+    /** 详情按钮操作 */
+    handleVitae(row) {
+      getVitaeListByPostId(row.postId).then(res => {
+        this.vitaeList = res.data
+        this.drawerTitle=row.postName
+        this.open3 = true
+      })
+    },
     /** 提交按钮 */
     submitForm: function() {
       this.$refs['form'].validate(valid => {
@@ -377,7 +426,7 @@ export default {
           }
         }
       })
-    },
+    }
   }
 }
 </script>

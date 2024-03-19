@@ -9,6 +9,14 @@ export function listVitae(vitae) {
   })
 }
 
+// 查询需求列表
+export function getVitaeListByPostId(id) {
+  return request({
+    url: `/recruit/vitae/getVitaeListByPostId/${id}`,
+    method: 'get',
+  })
+}
+
 export function listUser(){
   return request({
     url: '/recruit/vitae/getListUser',
