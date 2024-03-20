@@ -74,6 +74,16 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >新增
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
           type="warning"
           plain
           icon="el-icon-download"
@@ -329,7 +339,7 @@ export default {
           { min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur' }
         ]
       },
-      userList: null
+      userList: null,
     }
   },
   created() {
@@ -475,6 +485,11 @@ export default {
         this.$modal.msgSuccess('该简历已落选')
       }).catch(() => {
       })
+    },
+    handleAdd(){
+      this.reset()
+      this.getNoHcPostList()
+      this.getUserList()
     }
   }
 }
