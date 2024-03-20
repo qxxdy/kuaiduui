@@ -138,6 +138,9 @@
         label="期望月薪（k）"
         prop="intentionWillsalary"
       >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.vitae_intention_salary" :value="scope.row.intentionWillsalary"/>
+        </template>
       </el-table-column>
       <el-table-column
         label="岗位名称"
@@ -209,8 +212,12 @@
         <el-descriptions-item label="年龄">{{ desc.age }}</el-descriptions-item>
         <el-descriptions-item label="手机号">{{ desc.personPhone }}</el-descriptions-item>
         <el-descriptions-item label="邮箱">{{ desc.personEmail }}</el-descriptions-item>
-        <el-descriptions-item label="现居住地">{{ desc.personAddress }}</el-descriptions-item>
-        <el-descriptions-item label="户口所在地">{{ desc.personHousehold }}</el-descriptions-item>
+        <el-descriptions-item label="现居住地">
+          <dict-tag :options="dict.type.city_type" :value="desc.personAddress"/>
+        </el-descriptions-item>
+        <el-descriptions-item label="户口所在地">
+          <dict-tag :options="dict.type.city_type" :value="desc.personHousehold"/>
+        </el-descriptions-item>
         <el-descriptions-item label="最高学历">
           <dict-tag :options="dict.type.vitae_edu_max" :value="desc.personEduMax"/>
         </el-descriptions-item>
@@ -230,8 +237,12 @@
         <el-descriptions-item label="期望从事职业">
           <dict-tag :options="dict.type.sys_post_type" :value="desc.intentionWilljob"/>
         </el-descriptions-item>
-        <el-descriptions-item label="现月薪（k）">{{ desc.intentionNowsalary }}</el-descriptions-item>
-        <el-descriptions-item label="期望月薪（k）">{{ desc.intentionWillsalary }}</el-descriptions-item>
+        <el-descriptions-item label="现月薪（k）">
+          <dict-tag :options="dict.type.vitae_intention_salary" :value="desc.intentionNowsalary"/>
+        </el-descriptions-item>
+        <el-descriptions-item label="期望月薪（k）">
+          <dict-tag :options="dict.type.vitae_intention_salary" :value="desc.intentionWillsalary"/>
+        </el-descriptions-item>
         <el-descriptions-item label="自我评价">{{ desc.personReview }}</el-descriptions-item>
       </el-descriptions>
     </el-dialog>
@@ -303,7 +314,7 @@ import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 import { listAllPost } from '@/api/system/post'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'flow_recruit_status'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type'],
   data() {
     return {
       avatar: undefined,
@@ -339,7 +350,7 @@ export default {
           { min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur' }
         ]
       },
-      userList: null,
+      userList: null
     }
   },
   created() {
@@ -468,7 +479,7 @@ export default {
       listUser().then(res => this.userList = res.data)
     },
     submitForm() {
-      if (this.form.recruit1===this.form.recruit2){
+      if (this.form.recruit1 === this.form.recruit2) {
         this.$message.error('一二面面试官不可为同一人，请重新选择')
         return
       }
@@ -486,7 +497,7 @@ export default {
       }).catch(() => {
       })
     },
-    handleAdd(){
+    handleAdd() {
       this.reset()
       this.getNoHcPostList()
       this.getUserList()
