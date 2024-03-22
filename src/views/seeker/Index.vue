@@ -67,7 +67,23 @@
     >
       <div class="demo-drawer__content">
         <el-form ref="form" :model="form" :rules="rules">
-          <el-input v-model="form.postId" hidden/>
+          <el-input v-model="form.postId" v-if="false"/>
+
+          <el-form-item label="证件照"
+                        prop="avatar"
+                        :label-width="formLabelWidth"
+          >
+            <el-upload
+              class="avatar-uploader"
+              action="http://localhost/dev-api/avatar"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="avatarUrl" :src="avatarUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
           <el-form-item label="姓名"
                         prop="personName"
                         :label-width="formLabelWidth"
@@ -85,6 +101,20 @@
                         :label-width="formLabelWidth"
           >
             <el-input v-model="form.personPhone" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="年龄"
+                        prop="age"
+                        :label-width="formLabelWidth"
+          >
+            <el-date-picker
+              v-model="form.birth"
+              type="year"
+              placeholder="选择出生年份"
+              @change="changeAge"
+            >
+            </el-date-picker>
+            <el-divider direction="vertical"></el-divider>
+            <template v-if="form.birth>0">{{ form.age }} 岁</template>
           </el-form-item>
           <el-form-item label="性别" :label-width="formLabelWidth">
             <el-radio-group v-model="form.personGender">
@@ -222,7 +252,7 @@
 <script>
 import { listDemand } from '@/api/recruit/demand'
 import { validateEmail, validatePhone } from '@/config'
-import {addVitae} from '@/api/recruit/vitae'
+import { addVitae } from '@/api/recruit/vitae'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
@@ -242,7 +272,7 @@ export default {
         postName: undefined,
         postType: undefined
       },
-      formLabelWidth: '80px',
+      formLabelWidth: '90px',
       rules: {
         personName: [
           { required: true, message: '姓名不能为空', trigger: 'blur' }
@@ -255,7 +285,8 @@ export default {
           { required: true, message: '邮箱不能为空', trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
         ]
-      }
+      },
+      avatarUrl:undefined
     }
   },
   methods: {
@@ -278,11 +309,14 @@ export default {
       // this.getUserList()
       this.open = true
       this.title = d.name
-      this.form.postId=d.postId
+      this.form.postId = d.postId
+    },
+    changeAge() {
+      this.form.age = new Date().getFullYear() - new Date(this.form.birth).getFullYear()
     },
     reset() {
       this.form = {
-        postId:undefined,
+        postId: undefined,
         personName: undefined,
         personEmail: undefined,
         personPhone: undefined,
@@ -298,12 +332,16 @@ export default {
         intentionStatus: '1',
         intentionWilljob: '1',
         intentionNowsalary: '1',
-        intentionWillsalary: '1'
+        intentionWillsalary: '1',
+        age: undefined,
+        birth: undefined
       }
       this.resetForm('form')
     },
     cancel() {
       this.open = false
+      // this.form.age=new Date().getFullYear()-new Date(this.form.birth).getFullYear()
+      // console.log(this.form.age)
       this.reset()
     },
     submitForm: function() {
@@ -316,7 +354,10 @@ export default {
           })
         }
       })
-    }
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = this.avatarUrl
+    },
   }
 }
 </script>
@@ -338,5 +379,32 @@ export default {
   .chart-wrapper {
     padding: 8px;
   }
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
