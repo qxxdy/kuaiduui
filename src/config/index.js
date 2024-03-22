@@ -11,7 +11,7 @@ let validateEmail = (rule, value, callback) => {
 
 
 function isPhone (s) {
-  return /^(0[1-9]\d{1,2}-)\d{6,7}$/.test(s)
+  return /^[1][3,4,5,7,8][0-9]{9}$/.test(s)
 }
 let validatePhone = (rule, value, callback) => {
   if (!isPhone(value)) {

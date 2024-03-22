@@ -224,7 +224,9 @@
         <el-descriptions-item label="学习形式">
           <dict-tag :options="dict.type.vitae_edu_form" :value="desc.personEduForm"/>
         </el-descriptions-item>
-        <el-descriptions-item label="学校名称">{{ desc.personEduName }}</el-descriptions-item>
+        <el-descriptions-item label="学校名称">
+            <dict-tag :options="dict.type.edu_type" :value="desc.personEduName"/>
+        </el-descriptions-item>
         <el-descriptions-item label="专业类别">
           <dict-tag :options="dict.type.vitae_edu_major" :value="desc.personEduMajor"/>
         </el-descriptions-item>
@@ -314,7 +316,7 @@ import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 import { listAllPost } from '@/api/system/post'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type','edu_type'],
   data() {
     return {
       avatar: undefined,

@@ -23,3 +23,11 @@ export function listUser(){
     method: 'get',
   })
 }
+
+export function addVitae(data){
+  return request({
+    url: '/recruit/vitae/addVitae',
+    method: 'post',
+    data:data
+  })
+}

@@ -40,7 +40,7 @@
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
-              @click="handleAdd(d.postName)"
+              @click="handleAdd(d)"
             >
               <dict-tag :options="dict.type.sys_post_type" :value="d.postType"/>
               投递
@@ -67,19 +67,23 @@
     >
       <div class="demo-drawer__content">
         <el-form ref="form" :model="form" :rules="rules">
+          <el-input v-model="form.postId" hidden/>
           <el-form-item label="姓名"
                         prop="personName"
-                        :label-width="formLabelWidth">
+                        :label-width="formLabelWidth"
+          >
             <el-input v-model="form.personName" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="邮箱"
                         prop="personEmail"
-                        :label-width="formLabelWidth">
+                        :label-width="formLabelWidth"
+          >
             <el-input v-model="form.personEmail" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="手机号"
                         prop="personPhone"
-                        :label-width="formLabelWidth">
+                        :label-width="formLabelWidth"
+          >
             <el-input v-model="form.personPhone" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="性别" :label-width="formLabelWidth">
@@ -133,10 +137,17 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="学校名称" :label-width="formLabelWidth">
-            <el-input v-model="form.personEduName" autocomplete="off"></el-input>
+            <el-select v-model="form.personEduName" placeholder="现月薪">
+              <el-option
+                v-for="dict in dict.type.edu_type"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="专业名称" :label-width="formLabelWidth">
-            <el-radio-group v-model="form.personEduName">
+            <el-radio-group v-model="form.personEduMajor">
               <el-radio
                 v-for="dict in dict.type.vitae_edu_major"
                 :key="dict.value"
@@ -144,9 +155,6 @@
               >{{ dict.label }}
               </el-radio>
             </el-radio-group>
-          </el-form-item>
-          <el-form-item label="自我评价" :label-width="formLabelWidth">
-            <el-input type="textarea" v-model="form.personReview" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="现从事职业" :label-width="formLabelWidth">
             <el-radio-group v-model="form.intentionNowjob">
@@ -198,6 +206,9 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="自我评价" :label-width="formLabelWidth">
+            <el-input type="textarea" v-model="form.personReview" autocomplete="off"></el-input>
+          </el-form-item>
         </el-form>
         <div class="demo-drawer__footer">
           <el-button @click="cancel">取 消</el-button>
@@ -210,10 +221,11 @@
 
 <script>
 import { listDemand } from '@/api/recruit/demand'
-import {validateEmail,validatePhone} from '@/config'
+import { validateEmail, validatePhone } from '@/config'
+import {addVitae} from '@/api/recruit/vitae'
 
 export default {
-  dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type'],
+  dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
   created() {
     this.getList()
   },
@@ -261,14 +273,16 @@ export default {
         this.demandList = response.rows
       })
     },
-    handleAdd(name) {
+    handleAdd(d) {
       this.reset()
       // this.getUserList()
       this.open = true
-      this.title = name
+      this.title = d.name
+      this.form.postId=d.postId
     },
     reset() {
       this.form = {
+        postId:undefined,
         personName: undefined,
         personEmail: undefined,
         personPhone: undefined,
@@ -295,11 +309,11 @@ export default {
     submitForm: function() {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          // addVitae(this.form).then(response => {
-          //   this.$modal.msgSuccess('投递成功')
-          //   this.open = false
-          //   this.getList()
-          // })
+          addVitae(this.form).then(response => {
+            this.$modal.msgSuccess('投递成功')
+            this.open = false
+            this.getList()
+          })
         }
       })
     }
