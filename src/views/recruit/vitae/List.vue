@@ -103,6 +103,7 @@
         label="证件照"
         prop="avatar"
       >
+
         <template slot-scope="scope">
           <el-image style="width: 50px;" :src="scope.row.avatar"></el-image>
         </template>

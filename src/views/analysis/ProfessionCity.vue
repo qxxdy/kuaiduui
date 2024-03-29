@@ -60,7 +60,8 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
+          },
+          formatter: '{b} : {c}%'
         },
         xAxis: {
           type: 'category',

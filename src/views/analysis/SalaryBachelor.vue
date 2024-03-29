@@ -84,7 +84,8 @@ export default {
           axisPointer: {
             type: 'cross'
           },
-          padding: [5, 10]
+          padding: [5, 10],
+          formatter: '{b} : 期望{c}% 实际{c1}%'
         },
         yAxis: {
           axisTick: {

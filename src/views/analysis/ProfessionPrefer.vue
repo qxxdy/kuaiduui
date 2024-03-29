@@ -60,7 +60,8 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
+          },
+          formatter: '{b} : 整体{c}% 硕士{c1}% 本科{c2}%'
         },
         legend: {},
         grid: {

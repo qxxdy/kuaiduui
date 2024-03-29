@@ -60,7 +60,7 @@ export default {
         }
 
         // [{userName: 'rd2', loginCount: '2'}]
-        console.log(map)
+        // console.log(map)
         keys = []
         map.forEach((k, v) => {
           keys.push(k)
