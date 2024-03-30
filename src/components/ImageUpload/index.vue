@@ -1,7 +1,6 @@
 <template>
   <div class="component-upload-image">
     <el-upload
-      multiple
       :action="uploadImgUrl"
       list-type="picture-card"
       :on-success="handleUploadSuccess"
@@ -19,7 +18,7 @@
     >
       <i class="el-icon-plus"></i>
     </el-upload>
-    
+
     <!-- 上传提示 -->
     <div class="el-upload__tip" slot="tip" v-if="showTip">
       请上传

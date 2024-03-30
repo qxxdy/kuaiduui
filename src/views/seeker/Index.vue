@@ -73,16 +73,7 @@
                         prop="avatar"
                         :label-width="formLabelWidth"
           >
-            <el-upload
-              class="avatar-uploader"
-              action="http://localhost/dev-api/avatar"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img v-if="avatarUrl" :src="avatarUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <image-upload v-model="form.avatar" limit="1"></image-upload>
           </el-form-item>
           <el-form-item label="姓名"
                         prop="personName"
@@ -253,9 +244,13 @@
 import { listDemand } from '@/api/recruit/demand'
 import { validateEmail, validatePhone } from '@/config'
 import { addVitae } from '@/api/recruit/vitae'
+import ImageUpload from '../../components/ImageUpload'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
+  components:{
+    ImageUpload
+  },
   created() {
     this.getList()
   },
@@ -285,8 +280,7 @@ export default {
           { required: true, message: '邮箱不能为空', trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
         ]
-      },
-      avatarUrl:undefined
+      }
     }
   },
   methods: {
@@ -354,10 +348,7 @@ export default {
           })
         }
       })
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = this.avatarUrl
-    },
+    }
   }
 }
 </script>

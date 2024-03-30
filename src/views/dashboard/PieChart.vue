@@ -47,20 +47,11 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      // let map = [
-      //   { name: '职能', value: 0 },
-      //   { name: '技术', value: 0 },
-      //   { name: '产品', value: 0 },
-      //   { name: '设计', value: 0 },
-      //   { name: '其他', value: 0 }]
       let map=[]
       let keys=[]
       getRaddarChartData().then(res => {
         let keys=Object.keys(res.data)
         for (let i = 0; i < keys.length; i++) {
-          // map[i].name=keys[i]
-          // map[i].value=res.data[map[i].name].postCount
-
           map[i]=res.data[keys[i]]
           const {postType:name,postCount:value}=map[i]
           map[i]={name,value}
