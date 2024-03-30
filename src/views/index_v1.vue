@@ -107,13 +107,7 @@ export default {
       this.res.hc = res.data.hc
       this.res.vitaeCount = res.data.vitaeCount
     })
-    axios.get('https://luckycola.com.cn/tools/newsHot', {
-      params: {
-        ColaKey: this.ak
-      }
-    }).then(res => {
-      this.hotData = res.data.data.items.slice(0, 6)
-    })
+    this.getHotData()
   },
   data() {
     return {
@@ -125,6 +119,15 @@ export default {
     }
   },
   methods: {
+    getHotData(){
+      axios.get('https://luckycola.com.cn/tools/newsHot', {
+        params: {
+          ColaKey: this.ak
+        }
+      }).then(res => {
+        this.hotData = res.data.data.items.slice(0, 6)
+      })
+    },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     }
