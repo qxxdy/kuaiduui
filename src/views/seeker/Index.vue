@@ -227,6 +227,18 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item
+            v-for="(practice, index) in form.practices"
+            :label="'实习' + ++index"
+            :key="practice.key"
+            :prop="'practices.' + index + '.value'"
+            :rules="{required: true, message: '实习不能为空', trigger: 'blur'}"
+          >
+            <el-input v-model="practice.name" placeholder="公司名称"></el-input>
+            <el-input v-model="practice.info" placeholder="实习收获"></el-input>
+            <el-button @click.prevent="removePractice(practice)">删除</el-button>
+            <el-button @click="addPractice">➕添加工作经历</el-button>
+          </el-form-item>
           <el-form-item label="自我评价" :label-width="formLabelWidth">
             <el-input type="textarea" v-model="form.personReview" autocomplete="off"></el-input>
           </el-form-item>
@@ -248,7 +260,7 @@ import ImageUpload from '../../components/ImageUpload'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
-  components:{
+  components: {
     ImageUpload
   },
   created() {
@@ -258,7 +270,7 @@ export default {
     return {
       total: 0,
       open: false,
-      form: {},
+      form: {practices:[{value:''}]},
       title: null,
       demandList: null,
       queryParams: {
@@ -328,9 +340,22 @@ export default {
         intentionNowsalary: '1',
         intentionWillsalary: '1',
         age: undefined,
-        birth: undefined
+        birth: undefined,
+        practices: [{value: ''}]
       }
       this.resetForm('form')
+    },
+    addPractice(){
+      this.form.practices.push({
+        value: '',
+        key: Date.now()
+      });
+    },
+    removePractice(item) {
+      var index = this.form.practices.indexOf(item)
+      if (index !== -1) {
+        this.form.practices.splice(index, 1)
+      }
     },
     cancel() {
       this.open = false
