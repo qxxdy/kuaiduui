@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="所属部门" prop="deptId">
+        <el-select clearable v-model="queryParams.deptId" placeholder="请选择所属部门">
+          <el-option
+            v-for="dept in deptList"
+            :key="dept.deptId"
+            :label="dept.deptName"
+            :value="dept.deptId"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="岗位编码" prop="postCode">
         <el-input
           v-model="queryParams.postCode"
@@ -16,6 +26,16 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="岗位类别" prop="postType">
+        <el-select v-model="queryParams.postType" placeholder="岗位类别" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_post_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="岗位状态" clearable>
@@ -87,6 +107,7 @@
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="岗位编号" align="center" prop="postId" sortable/>
       <el-table-column label="岗位编码" align="center" prop="postCode"/>
+      <el-table-column label="所属部门" align="center" prop="deptName"/>
       <el-table-column label="岗位名称" align="center" prop="postName"/>
       <el-table-column label="岗位类别" align="center" prop="postType">
         <template slot-scope="scope">
@@ -137,6 +158,16 @@
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="所属部门" prop="deptId">
+          <el-select v-model="form.deptId" placeholder="请选择所属部门">
+            <el-option
+              v-for="dept in deptList"
+              :key="dept.deptId"
+              :label="dept.deptName"
+              :value="dept.deptId"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="岗位名称" prop="postName">
           <el-input v-model="form.postName" placeholder="请输入岗位名称"/>
         </el-form-item>
@@ -179,7 +210,8 @@
 </template>
 
 <script>
-import { listPost, getPost, delPost, addPost, updatePost } from '@/api/system/post'
+import { addPost, delPost, getPost, listPost, updatePost } from '@/api/system/post'
+import { listSubDept } from '@/api/system/dept'
 
 export default {
   name: 'Post',
@@ -210,12 +242,17 @@ export default {
         pageSize: 10,
         postCode: undefined,
         postName: undefined,
-        status: undefined
+        status: undefined,
+        postType: undefined,
+        deptId: undefined
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
+        deptId: [
+          { required: true, message: '所属部门不能为空', trigger: 'blur' }
+        ],
         postName: [
           { required: true, message: '岗位名称不能为空', trigger: 'blur' }
         ],
@@ -228,11 +265,15 @@ export default {
         postSort: [
           { required: true, message: '岗位顺序不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      deptList: []
     }
   },
   created() {
     this.getList()
+    listSubDept().then(res => {
+      this.deptList = res.data
+    })
   },
   methods: {
     /** 查询岗位列表 */
@@ -258,7 +299,8 @@ export default {
         postType: undefined,
         postSort: 0,
         status: '0',
-        remark: undefined
+        remark: undefined,
+        deptId:undefined
       }
       this.resetForm('form')
     },

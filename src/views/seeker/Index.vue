@@ -227,20 +227,22 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="专业技能"
+                        prop="personReview"
+                        :label-width="formLabelWidth">
+            <el-input type="textarea" v-model="form.personReview" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item
             v-for="(practice, index) in form.practices"
-            :label="'实习' + ++index"
+            :label="'工作经历' + ++index"
             :key="practice.key"
             :prop="'practices.' + index + '.value'"
-            :rules="{required: true, message: '实习不能为空', trigger: 'blur'}"
+            :rules="{required: true, message: '工作经历不能为空', trigger: 'blur'}"
           >
             <el-input v-model="practice.name" placeholder="公司名称"></el-input>
-            <el-input v-model="practice.info" placeholder="实习收获"></el-input>
-            <el-button @click.prevent="removePractice(practice)">删除</el-button>
+            <el-input v-model="practice.info" placeholder="工作内容"></el-input>
+            <el-button @click.prevent="removePractice(practice)" v-if="index!==1">删除</el-button>
             <el-button @click="addPractice">➕添加工作经历</el-button>
-          </el-form-item>
-          <el-form-item label="自我评价" :label-width="formLabelWidth">
-            <el-input type="textarea" v-model="form.personReview" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div class="demo-drawer__footer">
@@ -270,7 +272,7 @@ export default {
     return {
       total: 0,
       open: false,
-      form: {practices:[{value:''}]},
+      form: { practices: [{ value: '' }] },
       title: null,
       demandList: null,
       queryParams: {
@@ -291,6 +293,9 @@ export default {
         personEmail: [
           { required: true, message: '邮箱不能为空', trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
+        ],
+        personReview: [
+          { required: true, message: '专业技能不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -341,15 +346,15 @@ export default {
         intentionWillsalary: '1',
         age: undefined,
         birth: undefined,
-        practices: [{value: ''}]
+        practices: [{ value: '' }]
       }
       this.resetForm('form')
     },
-    addPractice(){
+    addPractice() {
       this.form.practices.push({
         value: '',
         key: Date.now()
-      });
+      })
     },
     removePractice(item) {
       var index = this.form.practices.indexOf(item)

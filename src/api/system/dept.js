@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+// 查询二级部门列表
+export function listSubDept(query) {
+  return request({
+    url: '/system/dept/listSub',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询部门列表
 export function listDept(query) {
   return request({

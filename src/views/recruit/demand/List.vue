@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="所属部门" prop="deptId">
+        <el-select clearable v-model="queryParams.deptId" placeholder="请选择所属部门">
+          <el-option
+            v-for="dept in deptList"
+            :key="dept.deptId"
+            :label="dept.deptName"
+            :value="dept.deptId"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="岗位名称" prop="postName">
         <el-input
           v-model="queryParams.postName"
@@ -71,6 +81,11 @@
             </el-form-item>
           </el-form>
         </template>
+      </el-table-column>
+      <el-table-column
+        label="所属部门"
+        prop="deptName"
+      >
       </el-table-column>
       <el-table-column
         label="岗位名称"
@@ -260,6 +275,7 @@
 import { getDemand, listDemand, listNoHcPost, listUser, updateDemand } from '@/api/recruit/demand'
 import { addDemand } from '@/api/flow/demand'
 import { getVitaeListByPostId } from '@/api/recruit/vitae'
+import {listSubDept} from '@/api/system/dept'
 
 export default {
   dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status'],
@@ -289,6 +305,7 @@ export default {
         pageSize: 10,
         postName: undefined,
         postType: undefined,
+        deptId:undefined,
         status: undefined
       },
       // 表单参数
@@ -310,11 +327,15 @@ export default {
         postDuty: [
           { required: true, message: '需求要求不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      deptList:[]
     }
   },
   created() {
     this.getList()
+    listSubDept().then(res=>{
+      this.deptList=res.data
+    })
   },
   methods: {
     getNoHcPostList() {
