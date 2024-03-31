@@ -226,7 +226,7 @@
           <dict-tag :options="dict.type.vitae_edu_form" :value="desc.personEduForm"/>
         </el-descriptions-item>
         <el-descriptions-item label="学校名称">
-            <dict-tag :options="dict.type.edu_type" :value="desc.personEduName"/>
+          <dict-tag :options="dict.type.edu_type" :value="desc.personEduName"/>
         </el-descriptions-item>
         <el-descriptions-item label="专业类别">
           <dict-tag :options="dict.type.vitae_edu_major" :value="desc.personEduMajor"/>
@@ -246,7 +246,41 @@
         <el-descriptions-item label="期望月薪（k）">
           <dict-tag :options="dict.type.vitae_intention_salary" :value="desc.intentionWillsalary"/>
         </el-descriptions-item>
-        <el-descriptions-item label="自我评价">{{ desc.personReview }}</el-descriptions-item>
+        <el-descriptions-item label="专业技能">
+          <el-popover trigger="hover" placement="bottom">
+            <p>
+              {{ desc.personReview }}
+            </p>
+            <div slot="reference" class="name-wrapper">
+              <p size="medium">{{ desc.personReview}}...<i
+                class="el-icon-view el-icon--right"
+              ></i></p>
+            </div>
+          </el-popover>
+        </el-descriptions-item>
+        <template v-for="(practice,index) in desc.practices">
+          <el-descriptions-item :label="'工作经历' + ++index">
+            <el-popover trigger="hover" placement="bottom">
+              <p>
+                <b>公司名称：</b>{{ practice.practiceName }}
+                <br>
+                <b>工作岗位：</b>{{ practice.practicePost }}
+                <br>
+                <b>工作内容：</b>{{ practice.practiceInfo }}
+                <br>
+                <b>起止时间：</b>
+                {{ practice.beginTime }} ~ {{ practice.endTime }}
+              </p>
+              <div slot="reference" class="name-wrapper">
+                <p size="medium">
+                  <b>公司名称：</b>{{ practice.practiceName }}
+                  <i class="el-icon-view el-icon--right"></i></p>
+              </div>
+            </el-popover>
+
+
+          </el-descriptions-item>
+        </template>
       </el-descriptions>
     </el-dialog>
 
@@ -317,7 +351,7 @@ import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 import { listAllPost } from '@/api/system/post'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type','edu_type'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type', 'edu_type'],
   data() {
     return {
       avatar: undefined,
@@ -422,6 +456,7 @@ export default {
       this.desc.intentionWillsalary = row.intentionWillsalary
       this.desc.postName = row.postName
       this.desc.age = row.age
+      this.desc.practices = row.practices
     },
     /** 重置按钮操作 */
     resetQuery() {
