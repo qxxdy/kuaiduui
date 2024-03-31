@@ -73,7 +73,7 @@
                         prop="avatar"
                         :label-width="formLabelWidth"
           >
-            <image-upload v-model="form.avatar" limit="1"></image-upload>
+            <image-upload v-model="form.avatar" :limit="imgLimit"></image-upload>
           </el-form-item>
           <el-form-item label="姓名"
                         prop="personName"
@@ -229,21 +229,49 @@
           </el-form-item>
           <el-form-item label="专业技能"
                         prop="personReview"
-                        :label-width="formLabelWidth">
+                        :label-width="formLabelWidth"
+          >
             <el-input type="textarea" v-model="form.personReview" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item
             v-for="(practice, index) in form.practices"
             :label="'工作经历' + ++index"
-            :key="practice.key"
-            :prop="'practices.' + index + '.value'"
-            :rules="{required: true, message: '工作经历不能为空', trigger: 'blur'}"
           >
-            <el-input v-model="practice.name" placeholder="公司名称"></el-input>
-            <el-input v-model="practice.info" placeholder="工作内容"></el-input>
+            <br>
+            <el-form-item label="公司名称"
+                          :label-width="formLabelWidth"
+            >
+              <el-input v-model="practice.practiceName"
+                        placeholder="公司名称"
+              />
+            </el-form-item>
+            <el-form-item label="工作岗位"
+                          :label-width="formLabelWidth"
+            >
+              <el-input v-model="practice.practicePost" placeholder="工作岗位"/>
+            </el-form-item>
+            <el-form-item label="工作内容"
+                          :label-width="formLabelWidth"
+            >
+              <el-input type="textarea" v-model="practice.practiceInfo" placeholder="工作内容"/>
+            </el-form-item>
+            <el-form-item label="起止时间"
+                          :label-width="formLabelWidth"
+            >
+              <el-date-picker
+                v-model="practice.beginTime"
+                type="month"
+                placeholder="开始时间"
+              />
+              <el-date-picker
+                v-model="practice.endTime"
+                type="month"
+                placeholder="结束时间"
+              />
+            </el-form-item>
             <el-button @click.prevent="removePractice(practice)" v-if="index!==1">删除</el-button>
-            <el-button @click="addPractice">➕添加工作经历</el-button>
           </el-form-item>
+          <el-button @click="addPractice">➕添加工作经历</el-button>
         </el-form>
         <div class="demo-drawer__footer">
           <el-button @click="cancel">取 消</el-button>
@@ -267,9 +295,11 @@ export default {
   },
   created() {
     this.getList()
+
   },
   data() {
     return {
+      imgLimit:1,
       total: 0,
       open: false,
       form: { practices: [{ value: '' }] },
@@ -296,7 +326,7 @@ export default {
         ],
         personReview: [
           { required: true, message: '专业技能不能为空', trigger: 'blur' }
-        ]
+        ],
       }
     }
   },
@@ -327,6 +357,7 @@ export default {
     },
     reset() {
       this.form = {
+        id:undefined,
         postId: undefined,
         personName: undefined,
         personEmail: undefined,
@@ -371,6 +402,7 @@ export default {
     submitForm: function() {
       this.$refs['form'].validate(valid => {
         if (valid) {
+          this.form.id=Date.now()
           addVitae(this.form).then(response => {
             this.$modal.msgSuccess('投递成功')
             this.open = false
