@@ -262,14 +262,12 @@
           <el-descriptions-item :label="'工作经历' + ++index">
             <el-popover trigger="hover" placement="bottom">
               <p>
-                <b>公司名称：</b>{{ practice.practiceName }}
+                <b>公司名称：</b>{{ practice.practiceName }} ( {{ practice.beginTime }} ~ {{ practice.endTime }} )
                 <br>
                 <b>工作岗位：</b>{{ practice.practicePost }}
                 <br>
                 <b>工作内容：</b>{{ practice.practiceInfo }}
-                <br>
-                <b>起止时间：</b>
-                {{ practice.beginTime }} ~ {{ practice.endTime }}
+
               </p>
               <div slot="reference" class="name-wrapper">
                 <p size="medium">
