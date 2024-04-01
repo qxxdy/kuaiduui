@@ -47,6 +47,16 @@
           <el-table-column label="发起人" align="center" prop="initUserName"/>
           <el-table-column label="待办人" align="center" prop="endUserName"/>
           <el-table-column label="岗位名称" align="center" prop="postName"/>
+          <el-table-column label="招聘类型" align="center" prop="recruitType">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.post_recruit_type" :value="scope.row.recruitType"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="招聘时间" align="center" prop="recruitTime">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
+            </template>
+          </el-table-column>
           <el-table-column label="需求人数" align="center" prop="postHc"/>
           <el-table-column label="需求描述" align="center">
             <template slot-scope="scope">
@@ -291,7 +301,7 @@ import { getInfo } from '@/api/login'
 
 export default {
   name: 'Demand',
-  dicts: ['flow_demand_status', 'flow_recruit_status'],
+  dicts: ['flow_demand_status', 'flow_recruit_status', 'post_recruit_type', 'post_recruit_time'],
   data() {
     return {
       // 遮罩层

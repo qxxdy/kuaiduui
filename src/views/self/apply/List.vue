@@ -30,6 +30,16 @@
     <el-table v-loading="loading" :data="demandList">
       <el-table-column label="审批人" align="center" prop="endUserName"/>
       <el-table-column label="岗位名称" align="center" prop="postName"/>
+      <el-table-column label="招聘类型" align="center" prop="recruitType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.post_recruit_type" :value="scope.row.recruitType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="招聘时间" align="center" prop="recruitTime">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
+        </template>
+      </el-table-column>
       <el-table-column label="需求人数" align="center" prop="postHc"/>
       <el-table-column label="需求描述" align="center">
         <template slot-scope="scope">
@@ -81,6 +91,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
   </div>
 </template>
 
@@ -88,7 +105,7 @@
 import { listSelfDemand,repeatDemand,recallDemand} from '@/api/flow/demand'
 export default {
   name: 'List',
-  dicts: ['flow_demand_status','flow_demand_status'],
+  dicts: ['flow_demand_status','flow_demand_status', 'post_recruit_type', 'post_recruit_time'],
   data() {
     return {
       // 遮罩层

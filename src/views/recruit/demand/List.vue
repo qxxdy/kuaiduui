@@ -39,6 +39,16 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="招聘时间" prop="recruitTime">
+        <el-select clearable v-model="queryParams.recruitTime" placeholder="请选择招聘时间">
+          <el-option
+            v-for="dict in dict.type.post_recruit_time"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -116,6 +126,14 @@
       >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.post_recruit_type" :value="scope.row.recruitType"/>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="招聘时间"
+        prop="recruitTime"
+      >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -225,6 +243,16 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="招聘时间" prop="recruitTime" v-if="form.recruitType==='1'">
+          <el-select clearable v-model="form.recruitTime" placeholder="请选择招聘时间">
+            <el-option
+              v-for="dict in dict.type.post_recruit_time"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="需求人数" prop="postHc">
           <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
         </el-form-item>
@@ -306,7 +334,7 @@ import { getVitaeListByPostId } from '@/api/recruit/vitae'
 import { listSubDept } from '@/api/system/dept'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status', 'post_recruit_type'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status', 'post_recruit_type', 'post_recruit_time'],
   data() {
     return {
       // 遮罩层
@@ -335,7 +363,8 @@ export default {
         postType: undefined,
         deptId: undefined,
         status: undefined,
-        recruitType: undefined
+        recruitType: undefined,
+        recruitTime: undefined
       },
       // 表单参数
       form: {},
@@ -355,7 +384,13 @@ export default {
         ],
         postDuty: [
           { required: true, message: '需求要求不能为空', trigger: 'blur' }
-        ]
+        ],
+        recruitType: [
+          { required: true, message: '招聘类型不能为空', trigger: 'blur' }
+        ],
+        recruitTime: [
+          { required: true, message: '招聘时间不能为空', trigger: 'blur' }
+        ],
       },
       deptList: []
     }
@@ -404,7 +439,7 @@ export default {
         postDesc: undefined,
         postDuty: undefined,
         status: '0',
-        recruitType: '1'
+        recruitType: undefined
       }
       this.resetForm('form')
     },
