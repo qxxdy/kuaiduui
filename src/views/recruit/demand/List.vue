@@ -29,6 +29,16 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="招聘类型" prop="recruitType">
+        <el-select clearable v-model="queryParams.recruitType" placeholder="请选择招聘类型">
+          <el-option
+            v-for="dict in dict.type.post_recruit_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -98,6 +108,14 @@
       >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_post_type" :value="scope.row.postType"/>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="招聘类别"
+        prop="recruitType"
+      >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.post_recruit_type" :value="scope.row.recruitType"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -197,6 +215,16 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="招聘类型" prop="recruitType">
+          <el-select clearable v-model="form.recruitType" placeholder="请选择招聘类型">
+            <el-option
+              v-for="dict in dict.type.post_recruit_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="需求人数" prop="postHc">
           <el-input v-model="form.postHc" placeholder="请输入需求人数" type="number" min="1"/>
         </el-form-item>
@@ -275,10 +303,10 @@
 import { getDemand, listDemand, listNoHcPost, listUser, updateDemand } from '@/api/recruit/demand'
 import { addDemand } from '@/api/flow/demand'
 import { getVitaeListByPostId } from '@/api/recruit/vitae'
-import {listSubDept} from '@/api/system/dept'
+import { listSubDept } from '@/api/system/dept'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status', 'post_recruit_type'],
   data() {
     return {
       // 遮罩层
@@ -292,7 +320,7 @@ export default {
       noHcPostList: [],
       userList: [], // 审批人列表【除了当前用户的所有可用用户】
       vitaeList: [],
-      drawerTitle:null,
+      drawerTitle: null,
       // 弹出层标题
       title: '',
       // 是否显示弹出层
@@ -305,8 +333,9 @@ export default {
         pageSize: 10,
         postName: undefined,
         postType: undefined,
-        deptId:undefined,
-        status: undefined
+        deptId: undefined,
+        status: undefined,
+        recruitType: undefined
       },
       // 表单参数
       form: {},
@@ -328,13 +357,13 @@ export default {
           { required: true, message: '需求要求不能为空', trigger: 'blur' }
         ]
       },
-      deptList:[]
+      deptList: []
     }
   },
   created() {
     this.getList()
-    listSubDept().then(res=>{
-      this.deptList=res.data
+    listSubDept().then(res => {
+      this.deptList = res.data
     })
   },
   methods: {
@@ -374,7 +403,8 @@ export default {
         postHc: 1,
         postDesc: undefined,
         postDuty: undefined,
-        status: '0'
+        status: '0',
+        recruitType: '1'
       }
       this.resetForm('form')
     },
@@ -410,7 +440,7 @@ export default {
     handleVitae(row) {
       getVitaeListByPostId(row.postId).then(res => {
         this.vitaeList = res.data
-        this.drawerTitle=row.postName
+        this.drawerTitle = row.postName
         this.open3 = true
       })
     },
