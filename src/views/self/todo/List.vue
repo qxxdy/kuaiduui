@@ -143,6 +143,38 @@
           <el-table-column label="一面面试官" align="center" prop="userName1"/>
           <el-table-column label="二面面试官" align="center" prop="userName2"/>
           <el-table-column label="所求岗位" align="center" prop="postName"/>
+          <el-table-column label="一面记录" align="center" prop="skillRecord1">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="bottom">
+                <p>
+                  <b>技术记录：</b>{{ scope.row.skillRecord1 }}
+                  <el-divider></el-divider>
+                  <b>性格记录：</b>{{ scope.row.characterRecord1 }}
+                </p>
+                <div slot="reference" class="name-wrapper">
+                  <p size="medium">...<i
+                    class="el-icon-view el-icon--right"
+                  ></i></p>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="二面记录" align="center" prop="characterRecord1">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="bottom">
+                <p>
+                  <b>技术记录：</b>{{ scope.row.skillRecord2 }}
+                  <el-divider></el-divider>
+                  <b>性格记录：</b>{{ scope.row.characterRecord2 }}
+                </p>
+                <div slot="reference" class="name-wrapper">
+                  <p size="medium">...<i
+                    class="el-icon-view el-icon--right"
+                  ></i></p>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
           <el-table-column label="流转类型" align="center" prop="flowType">
             <template slot-scope="scope">
               <dict-tag :options="dict.type.flow_recruit_status" :value="scope.row.flowType"/>
@@ -285,7 +317,7 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
-      form: {score:'A'},
+      form: { score: 'A' },
       vitaeId: null,
       // 查询参数
       queryParams: {
@@ -458,15 +490,18 @@ export default {
         ...this.queryParams
       }, `demand_${new Date().getTime()}.xlsx`)
     },
-    calculateScore(){
-      let t=this.assistScore1+this.assistScore2
-      if (t<=4) this.form.score='D'
-      else if (t===5) this.form.score='B'
-      else if (t>5&&t<=8) this.form.score='A'
-      else if (t===9||t===10) this.form.score='S'
+    calculateScore() {
+      let t = this.assistScore1 + this.assistScore2
+      if (t <= 4) {
+        this.form.score = 'D'
+      } else if (t === 5) {
+        this.form.score = 'B'
+      } else if (t > 5 && t <= 8) {
+        this.form.score = 'A'
+      } else if (t === 9 || t === 10) this.form.score = 'S'
       alert(this.form.score)
-      this.assistScore1=undefined
-      this.assistScore2=undefined
+      this.assistScore1 = undefined
+      this.assistScore2 = undefined
     }
   }
 }

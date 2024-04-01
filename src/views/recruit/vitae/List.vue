@@ -263,9 +263,9 @@
             <el-popover trigger="hover" placement="bottom">
               <p>
                 <b>公司名称：</b>{{ practice.practiceName }} ( {{ practice.beginTime }} ~ {{ practice.endTime }} )
-                <br>
+                <el-divider></el-divider>
                 <b>工作岗位：</b>{{ practice.practicePost }}
-                <br>
+                <el-divider></el-divider>
                 <b>工作内容：</b>{{ practice.practiceInfo }}
 
               </p>
