@@ -201,7 +201,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="评分" prop="score">
-                  <el-select v-model="form.score" placeholder="评分">
+                  <el-select v-model="form.score" placeholder="评分" :disabled="true">
                     <el-option
                       label="优秀"
                       value="S"
@@ -221,13 +221,24 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="技能记录" prop="skillRecord">
-                  <el-input v-model="form.skillRecord" placeholder="技能记录" />
+                  <el-rate
+                    v-model="assistScore1"
+                    show-text
+                  >
+                  </el-rate>
+                  <el-input v-model="form.skillRecord" placeholder="技能记录"/>
                 </el-form-item>
                 <el-form-item label="性格记录" prop="characterRecord">
-                  <el-input v-model="form.characterRecord" placeholder="性格记录" />
+                  <el-rate
+                    v-model="assistScore2"
+                    show-text
+                  >
+                  </el-rate>
+                  <el-input v-model="form.characterRecord" placeholder="性格记录"/>
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-button @click="calculateScore">计算</el-button>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -244,7 +255,7 @@
 <script>
 import { accessDemand, denyDemand, listDemand } from '@/api/flow/demand'
 import { accessRecruit, accScore, listRecruit, poolRecruit } from '@/api/flow/recruit'
-import {getInfo} from '@/api/login'
+import { getInfo } from '@/api/login'
 
 export default {
   name: 'Demand',
@@ -274,7 +285,7 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
-      form: {},
+      form: {score:'A'},
       vitaeId: null,
       // 查询参数
       queryParams: {
@@ -316,12 +327,14 @@ export default {
         score: [
           { required: true, message: '总评分不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      assistScore1: undefined,
+      assistScore2: undefined
     }
   },
   created() {
-    getInfo().then(res=>{
-      this.isRoot =(res.roles[0]=== 'admin')
+    getInfo().then(res => {
+      this.isRoot = (res.roles[0] === 'admin')
     })
 
     // console.log(
@@ -444,6 +457,16 @@ export default {
       this.download('flow/demand/export', {
         ...this.queryParams
       }, `demand_${new Date().getTime()}.xlsx`)
+    },
+    calculateScore(){
+      let t=this.assistScore1+this.assistScore2
+      if (t<=4) this.form.score='D'
+      else if (t===5) this.form.score='B'
+      else if (t>5&&t<=8) this.form.score='A'
+      else if (t===9||t===10) this.form.score='S'
+      alert(this.form.score)
+      this.assistScore1=undefined
+      this.assistScore2=undefined
     }
   }
 }
