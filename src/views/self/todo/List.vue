@@ -200,7 +200,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="评分" prop="userName1">
+                <el-form-item label="评分" prop="score">
                   <el-select v-model="form.score" placeholder="评分">
                     <el-option
                       label="优秀"
@@ -219,6 +219,12 @@
                       value="D"
                     ></el-option>
                   </el-select>
+                </el-form-item>
+                <el-form-item label="技能记录" prop="skillRecord">
+                  <el-input v-model="form.skillRecord" placeholder="技能记录" />
+                </el-form-item>
+                <el-form-item label="性格记录" prop="characterRecord">
+                  <el-input v-model="form.characterRecord" placeholder="性格记录" />
                 </el-form-item>
               </el-col>
             </el-row>
