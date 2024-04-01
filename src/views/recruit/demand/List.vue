@@ -146,6 +146,16 @@
         prop="vitaeCount"
       >
       </el-table-column>
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.recruitStatus"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -328,13 +338,13 @@
 </style>
 
 <script>
-import { getDemand, listDemand, listNoHcPost, listUser, updateDemand } from '@/api/recruit/demand'
+import { getDemand, listDemand, listNoHcPost, listUser, updateDemand, changeDemandStatus } from '@/api/recruit/demand'
 import { addDemand } from '@/api/flow/demand'
 import { getVitaeListByPostId } from '@/api/recruit/vitae'
 import { listSubDept } from '@/api/system/dept'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status', 'post_recruit_type', 'post_recruit_time'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'flow_recruit_status', 'post_recruit_type', 'post_recruit_time', 'sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -512,7 +522,16 @@ export default {
           }
         }
       })
-    }
+    },
+    handleStatusChange(row) {
+      let text = row.recruitStatus === "0" ? "释放" : "关闭";
+      this.$modal.confirm('确认要"' + text + '""' + row.postName + '"岗位吗？').then(function() {
+        return changeDemandStatus(row.postId, row.recruitStatus);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+      });
+    },
   }
 }
 </script>

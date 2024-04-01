@@ -283,7 +283,7 @@
 </template>
 
 <script>
-import { listDemand } from '@/api/recruit/demand'
+import { listSeekerDemand } from '@/api/recruit/demand'
 import { validateEmail, validatePhone } from '@/config'
 import { addVitae } from '@/api/recruit/vitae'
 import ImageUpload from '../../components/ImageUpload'
@@ -340,7 +340,7 @@ export default {
       this.handleQuery()
     },
     getList() {
-      listDemand(this.queryParams).then(response => {
+      listSeekerDemand(this.queryParams).then(response => {
         this.total = response.total
         this.demandList = response.rows
       })

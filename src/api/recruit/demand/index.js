@@ -1,5 +1,28 @@
 import request from '@/utils/request'
 
+// listSeekerDemand
+// 查询需求列表
+export function listSeekerDemand(query) {
+  return request({
+    url: '/recruit/demand/listSeekerDemand',
+    method: 'get',
+    params: query
+  })
+}
+
+// changeDemandStatus
+export function changeDemandStatus(postId, recruitStatus) {
+  const data = {
+    postId,
+    recruitStatus
+  }
+  return request({
+    url: '/recruit/demand/changeStatus',
+    method: 'post',
+    data: data
+  })
+}
+
 // 查询需求列表
 export function listDemand(query) {
   return request({
