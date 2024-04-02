@@ -197,9 +197,10 @@
               </el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="期望从事职业" :label-width="formLabelWidth">
+          <el-form-item  label="期望从事职业" :label-width="formLabelWidth">
             <el-radio-group v-model="form.intentionWilljob">
               <el-radio
+                disabled
                 v-for="dict in dict.type.sys_post_type"
                 :key="dict.value"
                 :label="dict.value"
@@ -351,6 +352,7 @@ export default {
       this.open = true
       this.title = d.name
       this.form.postId = d.postId
+      this.form.intentionWilljob=d.postType
     },
     changeAge() {
       this.form.age = new Date().getFullYear() - new Date(this.form.birth).getFullYear()

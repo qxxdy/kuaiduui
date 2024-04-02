@@ -292,6 +292,7 @@
 
 <script>
 import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus } from "@/api/monitor/job";
+import {listJobLog} from '@/api/monitor/jobLog'
 import Crontab from '@/components/Crontab'
 
 export default {
@@ -345,7 +346,8 @@ export default {
         cronExpression: [
           { required: true, message: "cron执行表达式不能为空", trigger: "blur" }
         ]
-      }
+      },
+      jobLogList:[]
     };
   },
   created() {
@@ -507,7 +509,7 @@ export default {
       this.download('monitor/job/export', {
         ...this.queryParams
       }, `job_${new Date().getTime()}.xlsx`)
-    }
-  }
+    },
+  },
 };
 </script>

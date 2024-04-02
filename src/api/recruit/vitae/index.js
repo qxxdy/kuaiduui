@@ -17,9 +17,16 @@ export function getVitaeListByPostId(id) {
   })
 }
 
-export function listUser(){
+// export function listUser(){
+//   return request({
+//     url: '/recruit/vitae/getListUser',
+//     method: 'get',
+//   })
+// }
+
+export function getRecruitUserList(vid){
   return request({
-    url: '/recruit/vitae/getListUser',
+    url: `/recruit/vitae/getRecruitUserList/${vid}`,
     method: 'get',
   })
 }

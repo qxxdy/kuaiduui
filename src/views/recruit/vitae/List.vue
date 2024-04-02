@@ -35,16 +35,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="专业类别" prop="personEduMajor">
-        <el-select v-model="queryParams.personEduMajor" placeholder="专业类别" clearable>
-          <el-option
-            v-for="dict in dict.type.vitae_edu_major"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="求职岗位" prop="postName">
         <el-select v-model="queryParams.postId" placeholder="求职岗位" clearable>
           <el-option
@@ -147,6 +137,14 @@
         label="岗位名称"
         prop="postName"
       >
+      </el-table-column>
+      <el-table-column
+        label="岗位类型"
+        prop="intentionWilljob"
+      >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_post_type" :value="scope.row.intentionWilljob"/>
+        </template>
       </el-table-column>
       <el-table-column
         sortable
@@ -344,7 +342,7 @@
 </style>
 
 <script>
-import { listUser, listVitae } from '@/api/recruit/vitae'
+import { getRecruitUserList, listVitae } from '@/api/recruit/vitae'
 import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 import { listAllPost } from '@/api/system/post'
 
@@ -491,14 +489,14 @@ export default {
       switch (command) {
         case 'handleRecruitAccess':
           this.vitaeId = row.id
-          this.handleUserList()
+          this.handleUserList(this.vitaeId)
           this.open = true
           this.reset()
           // this.handleRecruitAccess(row)
           break
         case 'handleRecruitReAccess':
           this.vitaeId = row.id
-          this.handleUserList()
+          this.handleUserList(this.vitaeId)
           this.open = true
           this.reset()
           // this.handleRecruitAccess(row)
@@ -511,8 +509,12 @@ export default {
           break
       }
     },
-    handleUserList() {
-      listUser().then(res => this.userList = res.data)
+    handleUserList(vid) {
+      getRecruitUserList(vid).then(res => {
+        console.log(">>>")
+        this.userList = res.data
+        console.log(this.userList)
+      })
     },
     submitForm() {
       if (this.form.recruit1 === this.form.recruit2) {
