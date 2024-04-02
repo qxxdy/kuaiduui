@@ -159,6 +159,12 @@
       >
       </el-table-column>
       <el-table-column
+        sortable
+        label="初筛时间"
+        prop="screenTime"
+      >
+      </el-table-column>
+      <el-table-column
         label="流转类别"
         prop="flowType"
       >
