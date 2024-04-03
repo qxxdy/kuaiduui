@@ -198,7 +198,6 @@
       <el-button @click="addPractice">➕添加工作经历</el-button>
     </el-form>
     <div class="demo-drawer__footer">
-      <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="submitForm">更新</el-button>
     </div>
   </div>
@@ -206,7 +205,7 @@
 
 <script>
 import { validateEmail, validatePhone } from '@/config'
-import { addVitae } from '@/api/recruit/vitae'
+import { addVitae,getVitaeByPhone } from '@/api/recruit/vitae'
 import ImageUpload from '../../../components/ImageUpload'
 import { getUserProfile } from '@/api/system/user'
 
@@ -215,20 +214,38 @@ export default {
   components: {
     ImageUpload
   },
-  mounted() {
+  created() {
     getUserProfile().then(res => {
       this.form.personPhone = res.data.phonenumber
       this.form.personEmail = res.data.email
       this.form.personGender = res.data.sex
-      // alert(this.form.personEmail)
-      this.form.a = 1
+      getVitaeByPhone(res.data.phonenumber).then(res=>{
+        this.form.id=res.data.id
+        this.form.avatar=res.data.avatar
+        this.form.personName=res.data.personName
+        this.form.personAddress=res.data.personAddress
+        this.form.personHousehold=res.data.personHousehold
+        this.form.personEduMajor=res.data.personEduMajor
+        this.form.personEduMax=res.data.personEduMax
+        this.form.personEduForm=res.data.personEduForm
+        this.form.personEduName=res.data.personEduName
+        this.form.personReview=res.data.personReview
+        this.form.intentionNowjob=res.data.intentionNowjob
+        this.form.intentionStatus=res.data.intentionStatus
+        this.form.intentionNowsalary=res.data.intentionNowsalary
+        this.form.intentionWillsalary=res.data.intentionWillsalary
+        this.form.age=res.data.age
+        this.form.practices=res.data.practices
+      })
     })
+
   },
   data() {
     return {
       imgLimit: 1,
       open: false,
       form: {
+        id:undefined,
         practices: [{ value: '' }],
         avatar:undefined,
         personName:undefined,
@@ -296,7 +313,6 @@ export default {
     submitForm: function() {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          this.form.id = Date.now()
           addVitae(this.form).then(response => {
             this.$modal.msgSuccess('简历更新成功')
             this.open = false
