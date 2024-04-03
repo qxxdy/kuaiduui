@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+// 投递简历
+export function sendVitaeToPost(personPhone,postId){
+  return request({
+    url: `/recruit/vitae/sendVitaeToPost/${personPhone}/${postId}`,
+    method: 'post'
+  })
+}
+
+
 // 根据手机号获取对应简历详情
 export function getVitaeByPhone(phone) {
   return request({

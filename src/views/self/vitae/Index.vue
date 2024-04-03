@@ -219,7 +219,7 @@ export default {
       this.form.personPhone = res.data.phonenumber
       this.form.personEmail = res.data.email
       this.form.personGender = res.data.sex
-      getVitaeByPhone(res.data.phonenumber).then(res=>{
+      getVitaeByPhone(res.data.phonenumber=-1).then(res=>{
         this.form.id=res.data.id
         this.form.avatar=res.data.avatar
         this.form.personName=res.data.personName
@@ -316,7 +316,6 @@ export default {
           addVitae(this.form).then(response => {
             this.$modal.msgSuccess('简历更新成功')
             this.open = false
-            this.getList()
           })
         }
       })
