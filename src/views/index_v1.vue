@@ -1,61 +1,75 @@
 <template>
   <div class="dashboard-editor-container">
 
-    <!--top卡片-->
-    <panel-group @handleSetLineChartData="handleSetLineChartData"/>
+    <div v-has-role="['seeker']">
+      <h2 style="color: #d10050">快度欢迎您的加入！</h2>
+      <i>招最好的人，给最大的空间。看最后的结果，让优秀人才脱颖而出！</i>
+      <el-divider></el-divider>
+      <el-carousel type="card" height="250px">
+        <el-carousel-item v-for="item in 4" :key="item">
+          <h3 class="small">{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
 
-    <!--bottom-->
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart/>
-        </div>
-      </el-col>
+    </div>
 
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie2-chart/>
-        </div>
-      </el-col>
+    <div v-has-role="['boss','rd','hr','pm']">
+      <!--top卡片-->
+      <panel-group @handleSetLineChartData="handleSetLineChartData"/>
 
-      <el-col size="small" :xs="24" :sm="24" :lg="8">
-        <!--          <pie-chart/>-->
-        <div class="chart-wrapper">
-          <div slot="header" class="clearfix">
-            <span>今日热榜</span>
+      <!--bottom-->
+      <el-row :gutter="32">
+        <el-col :xs="24" :sm="24" :lg="8">
+          <div class="chart-wrapper">
+            <pie-chart/>
           </div>
-          <template v-for="o in hotData">
-<!--            <el-avatar size="small" :src="o.logo"></el-avatar>-->
-            <el-link
-              :href="o.url"
-              target="_blank"
-              type="primary"
-            >
-              <template>
-                <el-popover trigger="hover" placement="top">
-                  <p>
-                    {{ o.title }}
-                  </p>
-                  <div slot="reference" class="name-wrapper">
-                    <p size="medium">🔥{{ o.views }} | {{ o.title.substring(0, 10) }}...<i
-                      class="el-icon-view el-icon--right"
-                    ></i></p>
-                  </div>
-                </el-popover>
-              </template>
+        </el-col>
 
-            </el-link>
-<!--            <hr>-->
-          </template>
-        </div>
-      </el-col>
+        <el-col :xs="24" :sm="24" :lg="8">
+          <div class="chart-wrapper">
+            <pie2-chart/>
+          </div>
+        </el-col>
 
-    </el-row>
+        <el-col size="small" :xs="24" :sm="24" :lg="8">
+          <!--          <pie-chart/>-->
+          <div class="chart-wrapper">
+            <div slot="header" class="clearfix">
+              <span>今日热榜</span>
+            </div>
+            <template v-for="o in hotData">
+              <!--            <el-avatar size="small" :src="o.logo"></el-avatar>-->
+              <el-link
+                :href="o.url"
+                target="_blank"
+                type="primary"
+              >
+                <template>
+                  <el-popover trigger="hover" placement="top">
+                    <p>
+                      {{ o.title }}
+                    </p>
+                    <div slot="reference" class="name-wrapper">
+                      <p size="medium">🔥{{ o.views }} | {{ o.title.substring(0, 10) }}...<i
+                        class="el-icon-view el-icon--right"
+                      ></i></p>
+                    </div>
+                  </el-popover>
+                </template>
 
-    <!--折线图-->
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="res"/>
-    </el-row>
+              </el-link>
+              <!--            <hr>-->
+            </template>
+          </div>
+        </el-col>
+
+      </el-row>
+
+      <!--折线图-->
+      <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+        <line-chart :chart-data="res"/>
+      </el-row>
+    </div>
 
 
   </div>
@@ -119,7 +133,7 @@ export default {
     }
   },
   methods: {
-    getHotData(){
+    getHotData() {
       axios.get('https://luckycola.com.cn/tools/newsHot', {
         params: {
           ColaKey: this.ak
@@ -152,5 +166,21 @@ export default {
   .chart-wrapper {
     padding: 8px;
   }
+}
+
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 150px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
 }
 </style>

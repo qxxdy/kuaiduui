@@ -29,20 +29,20 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input
-          v-model="registerForm.code"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter.native="handleRegister"
-        >
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
-        </el-input>
-        <div class="register-code">
-          <img :src="codeUrl" @click="getCode" class="register-code-img"/>
-        </div>
-      </el-form-item>
+<!--      <el-form-item prop="code" v-if="captchaEnabled">-->
+<!--        <el-input-->
+<!--          v-model="registerForm.code"-->
+<!--          auto-complete="off"-->
+<!--          placeholder="验证码"-->
+<!--          style="width: 63%"-->
+<!--          @keyup.enter.native="handleRegister"-->
+<!--        >-->
+<!--          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />-->
+<!--        </el-input>-->
+<!--        <div class="register-code">-->
+<!--          <img :src="codeUrl" @click="getCode" class="register-code-img"/>-->
+<!--        </div>-->
+<!--      </el-form-item>-->
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
@@ -104,22 +104,22 @@ export default {
         code: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
-      captchaEnabled: true
+      captchaEnabled: false
     };
   },
   created() {
-    this.getCode();
+    // this.getCode();
   },
   methods: {
-    getCode() {
-      getCodeImg().then(res => {
-        this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-        if (this.captchaEnabled) {
-          this.codeUrl = "data:image/gif;base64," + res.img;
-          this.registerForm.uuid = res.uuid;
-        }
-      });
-    },
+    // getCode() {
+    //   getCodeImg().then(res => {
+    //     this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled;
+    //     if (this.captchaEnabled) {
+    //       this.codeUrl = "data:image/gif;base64," + res.img;
+    //       this.registerForm.uuid = res.uuid;
+    //     }
+    //   });
+    // },
     handleRegister() {
       this.$refs.registerForm.validate(valid => {
         if (valid) {

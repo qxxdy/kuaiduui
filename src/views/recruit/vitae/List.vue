@@ -330,6 +330,18 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="时间" prop="initTime">
+              <el-select v-model="form.recruit1" placeholder="一面">
+                <el-option
+                  v-for="user in userList"
+                  :key="user.userId"
+                  :label="user.userName"
+                  :value="user.userId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">

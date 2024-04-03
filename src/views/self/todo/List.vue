@@ -195,7 +195,7 @@
             <template slot-scope="scope">
 
               <el-button
-                v-if="!isRoot"
+                v-if="!isBoss"
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
@@ -203,7 +203,7 @@
               >面试
               </el-button>
 
-              <template v-if="isRoot">
+              <template v-if="isBoss">
                 <el-button
                   size="mini"
                   type="text"
@@ -308,7 +308,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
-      isRoot: false,
+      isBoss: false,
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -376,7 +376,7 @@ export default {
   },
   created() {
     getInfo().then(res => {
-      this.isRoot = (res.roles[0] === 'admin')
+      this.isBoss = (res.roles[0] === 'boss')
     })
 
     // console.log(

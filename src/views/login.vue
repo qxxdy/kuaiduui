@@ -71,7 +71,7 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "root",
+        username: "boss",
         password: "xudengyu",
         rememberMe: false,
         code: "",
@@ -90,7 +90,7 @@ export default {
       // 验证码开关
       captchaEnabled: false,
       // 注册开关
-      register: false,
+      register: true,
       redirect: undefined
     };
   },
@@ -103,7 +103,7 @@ export default {
     }
   },
   created() {
-    this.getCode();
+    // this.getCode();
     this.getCookie();
   },
   methods: {
