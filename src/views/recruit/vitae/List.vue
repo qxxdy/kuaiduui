@@ -160,9 +160,31 @@
       </el-table-column>
       <el-table-column
         sortable
-        label="初筛时间"
+        label="处理时间"
         prop="screenTime"
       >
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="bottom">
+            <p>
+              <b>初筛时间：</b>{{ scope.row.screenTime }}
+              <el-divider></el-divider>
+              <b>一面时间：</b>{{ scope.row.initTime }}
+              <el-divider></el-divider>
+              <b>二面时间：</b>{{ scope.row.endTime }}
+              <el-divider></el-divider>
+              <b>评估时间：</b>{{ scope.row.evalTime }}
+              <el-divider></el-divider>
+              <b>待入职时间：</b>{{ scope.row.accTime }}
+              <el-divider></el-divider>
+              <b>落选时间：</b>{{ scope.row.poolTime }}
+            </p>
+            <div slot="reference" class="name-wrapper">
+              <p size="medium">...<i
+                class="el-icon-view el-icon--right"
+              ></i></p>
+            </div>
+          </el-popover>
+        </template>
       </el-table-column>
       <el-table-column
         label="流转类别"
