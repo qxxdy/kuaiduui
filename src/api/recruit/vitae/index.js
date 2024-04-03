@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+// 根据手机号获取对应简历详情
+export function getVitaeByPhone(phone) {
+  return request({
+    url: `/recruit/vitae/getVitaeByPhone/${phone}`,
+    method: 'get'
+  })
+}
+
 // 查询需求列表
 export function listVitae(vitae) {
   return request({

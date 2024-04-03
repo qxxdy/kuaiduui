@@ -2,10 +2,10 @@
   <div class="dashboard-editor-container">
 
     <div v-has-role="['seeker']">
-      <h2 style="color: #d10050">快度欢迎您的加入！</h2>
-      <i>招最好的人，给最大的空间。看最后的结果，让优秀人才脱颖而出！</i>
+      <h2 style="color: #d10050">{{companyInfo.title}}</h2>
+      <i>{{companyInfo.slogan}}</i>
       <el-divider></el-divider>
-      <el-carousel type="card" height="250px">
+      <el-carousel type="card" height="400px">
         <el-carousel-item v-for="item in 4" :key="item">
           <h3 class="small">{{ item }}</h3>
         </el-carousel-item>
@@ -129,7 +129,11 @@ export default {
       hotData: [{ ID: null, title: null, url: null }],
       day: new Date(),
       lineChartData: null,
-      res: { demandList: [], hc: [], vitaeCount: [] }
+      res: { demandList: [], hc: [], vitaeCount: [] },
+      companyInfo:{
+        title:"快度欢迎您的加入！",
+        slogan:"招最好的人，给最大的空间，看最后的结果，让优秀人才脱颖而出！",
+      }
     }
   },
   methods: {
