@@ -509,7 +509,7 @@ export default {
       } else if (t > 5 && t <= 8) {
         this.form.score = 'A'
       } else if (t === 9 || t === 10) this.form.score = 'S'
-      alert(this.form.score)
+      this.$message.success(`综合评分：${this.form.score}`)
       this.assistScore1 = undefined
       this.assistScore2 = undefined
     }
