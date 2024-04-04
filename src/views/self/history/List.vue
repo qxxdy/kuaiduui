@@ -68,6 +68,12 @@ export default {
         this.screenStatus=errorStatus
         return
       }
+      // 初筛通过面试中
+      if (screenTime&&flowType!==poolType&&!accType){
+        this.step=2
+        this.screenStatus=successStatus
+        return
+      }
       // 面试中落选
       if (flowType===poolType&&initTime){
         this.step=3
