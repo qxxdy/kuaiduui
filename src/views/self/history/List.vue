@@ -57,6 +57,7 @@ export default {
       let flowType=data.flowType
       let initTime=data.initTime
       let screenTime=data.screenTime
+      let accTime=data.accTime
       // 未初筛
       if (!screenTime){
         this.step=1
@@ -69,10 +70,9 @@ export default {
         return
       }
       // 初筛通过面试中
-      if (screenTime&&flowType!==poolType&&!accType){
+      if (screenTime&&flowType!==poolType&&!accTime){
         this.step=2
         this.screenStatus=successStatus
-        alert(1)
         return
       }
       // 面试中落选
