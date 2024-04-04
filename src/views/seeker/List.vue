@@ -67,7 +67,9 @@
 import { listSeekerDemand } from '@/api/recruit/demand'
 import ImageUpload from '../../components/ImageUpload'
 import { getUserProfile } from '@/api/system/user'
-import { getVitaeByPhone, sendVitaeToPost } from '@/api/recruit/vitae'
+import { sendVitaeToPost } from '@/api/recruit/vitae'
+import { listVitae } from '@/api/recruit/vitae'
+import {poolType} from '@/const'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
@@ -78,8 +80,10 @@ export default {
     this.getList()
     getUserProfile().then(res => {
       this.personPhone = res.data.phonenumber
-      getVitaeByPhone(this.personPhone).then(res => {
-        if (res.data.postId) {
+      listVitae(this.personPhone).then(res => {
+        let data=res.rows[0]
+        if (data.flowType&&data.flowType!==poolType) {
+          this.$message.error("您当前简历已在流程中，请勿重复投递！")
           this.isCan = false
           return
         }
@@ -127,6 +131,7 @@ export default {
       }).then(() => {
         this.getList()
         this.$modal.msgSuccess('投递成功')
+        window.location.reload()
       }).catch(() => {
       })
     }

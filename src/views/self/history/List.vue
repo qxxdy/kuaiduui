@@ -25,11 +25,7 @@
 <script>
 import { getUserProfile } from '@/api/system/user'
 import { listVitae } from '@/api/recruit/vitae'
-
-const poolType='5'
-const accType='4'
-const successStatus='success'
-const errorStatus='error'
+import {poolType,accType,successStatus,errorStatus} from '@/const'
 
 export default {
   dicts: ['sys_post_type'],
