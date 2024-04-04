@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 投递简历
-export function sendVitaeToPost(personPhone,postId){
+export function sendVitaeToPost(personPhone='-1',postId){
   return request({
     url: `/recruit/vitae/sendVitaeToPost/${personPhone}/${postId}`,
     method: 'post'
@@ -10,7 +10,7 @@ export function sendVitaeToPost(personPhone,postId){
 
 
 // 根据手机号获取对应简历详情
-export function getVitaeByPhone(phone) {
+export function getVitaeByPhone(phone='-1') {
   return request({
     url: `/recruit/vitae/getVitaeByPhone/${phone}`,
     method: 'get'

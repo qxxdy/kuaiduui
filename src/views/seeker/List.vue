@@ -78,7 +78,7 @@ export default {
     this.getList()
     getUserProfile().then(res => {
       this.personPhone = res.data.phonenumber
-      getVitaeByPhone(this.personPhone=-1).then(res => {
+      getVitaeByPhone(this.personPhone).then(res => {
         if (res.data.postId) {
           this.isCan = false
           return
@@ -123,7 +123,7 @@ export default {
       let postId = d.postId
       let personPhone=this.personPhone
       this.$modal.confirm('确认投递该岗位？').then(function() {
-        return sendVitaeToPost(personPhone=-1, postId=-1)
+        return sendVitaeToPost(personPhone, postId)
       }).then(() => {
         this.getList()
         this.$modal.msgSuccess('投递成功')

@@ -160,6 +160,12 @@
       </el-table-column>
       <el-table-column
         sortable
+        label="投递时间"
+        prop="sendTime"
+      >
+      </el-table-column>
+      <el-table-column
+        sortable
         label="处理时间"
         prop="screenTime"
       >

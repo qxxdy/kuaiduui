@@ -219,7 +219,7 @@ export default {
       this.form.personPhone = res.data.phonenumber
       this.form.personEmail = res.data.email
       this.form.personGender = res.data.sex
-      getVitaeByPhone(res.data.phonenumber=-1).then(res=>{
+      getVitaeByPhone(res.data.phonenumber).then(res=>{
         this.form.id=res.data.id
         this.form.avatar=res.data.avatar
         this.form.personName=res.data.personName
