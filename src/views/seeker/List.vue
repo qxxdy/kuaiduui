@@ -69,7 +69,7 @@ import ImageUpload from '../../components/ImageUpload'
 import { getUserProfile } from '@/api/system/user'
 import { sendVitaeToPost } from '@/api/recruit/vitae'
 import { listVitae } from '@/api/recruit/vitae'
-import {poolType} from '@/const'
+import {poolType,NO_PROFILE_ERR} from '@/const'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
@@ -77,9 +77,14 @@ export default {
     ImageUpload
   },
   created() {
+    let personPhone;
     this.getList()
     getUserProfile().then(res => {
       this.personPhone = res.data.phonenumber
+      if (!res.data.phonenumber) {
+        this.$message.error(NO_PROFILE_ERR)
+        return
+      }
       listVitae(this.personPhone).then(res => {
         let data=res.rows[0]
         if (data.flowType&&data.flowType!==poolType) {
@@ -126,6 +131,10 @@ export default {
     handleAdd(d) {
       let postId = d.postId
       let personPhone=this.personPhone
+      if (!personPhone) {
+        this.$message.error(NO_PROFILE_ERR)
+        return
+      }
       this.$modal.confirm('确认投递该岗位？').then(function() {
         return sendVitaeToPost(personPhone, postId)
       }).then(() => {

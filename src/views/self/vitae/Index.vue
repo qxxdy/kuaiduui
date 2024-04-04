@@ -208,6 +208,7 @@ import { validateEmail, validatePhone } from '@/config'
 import { addVitae,getVitaeByPhone } from '@/api/recruit/vitae'
 import ImageUpload from '../../../components/ImageUpload'
 import { getUserProfile } from '@/api/system/user'
+import {NO_PROFILE_ERR} from '@/const'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
@@ -219,6 +220,10 @@ export default {
       this.form.personPhone = res.data.phonenumber
       this.form.personEmail = res.data.email
       this.form.personGender = res.data.sex
+      if (!res.data.phonenumber) {
+        this.$message.error(NO_PROFILE_ERR)
+        return
+      }
       getVitaeByPhone(res.data.phonenumber).then(res=>{
         this.form.id=res.data.id
         this.form.avatar=res.data.avatar

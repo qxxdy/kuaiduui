@@ -25,7 +25,7 @@
 <script>
 import { getUserProfile } from '@/api/system/user'
 import { listVitae } from '@/api/recruit/vitae'
-import {poolType,accType,successStatus,errorStatus} from '@/const'
+import {poolType,accType,successStatus,errorStatus,NO_PROFILE_ERR} from '@/const'
 
 export default {
   dicts: ['sys_post_type'],
@@ -34,6 +34,10 @@ export default {
     let vitaeId
     getUserProfile().then(res => {
       personPhone = res.data.phonenumber
+      if (!personPhone) {
+        this.$message.error(NO_PROFILE_ERR)
+        return
+      }
       listVitae(personPhone).then(res => {
         this.historys = res.rows
         this.setStepAndStatus(res.rows[0])
@@ -68,6 +72,7 @@ export default {
       if (screenTime&&flowType!==poolType&&!accType){
         this.step=2
         this.screenStatus=successStatus
+        alert(1)
         return
       }
       // 面试中落选

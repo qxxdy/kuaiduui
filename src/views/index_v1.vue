@@ -1,19 +1,23 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="app-container">
 
     <div v-has-role="['seeker']">
-      <h2 style="color: #d10050">{{companyInfo.title}}</h2>
-      <i>{{companyInfo.slogan}}</i>
+      <h2 style="color: #d10000">{{ companyInfo.title }}</h2>
+      <i style="color: #97a8be">{{ companyInfo.slogan }}</i>
       <el-divider></el-divider>
-      <el-carousel type="card" height="400px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 class="small">{{ item }}</h3>
+      <el-carousel type="card"
+                   height="400px"
+                   indicator-position="outside">
+       <el-carousel-item v-for="c in caroucelList"
+                         :key="c.id"
+                         :label="c.titie">
+         <image-preview :src="c.path" height="100%" width="100%"/>
         </el-carousel-item>
       </el-carousel>
 
     </div>
 
-    <div v-has-role="['boss','rd','hr','pm']">
+    <div class="dashboard-editor-container" v-has-role="['boss','rd','hr','pm']">
       <!--top卡片-->
       <panel-group @handleSetLineChartData="handleSetLineChartData"/>
 
@@ -83,6 +87,7 @@ import PieChart from './dashboard/PieChart'
 import Pie2Chart from './dashboard/Pie2Chart'
 import BarChart from './dashboard/BarChart'
 import { getChartData } from '@/api/analysis'
+import {listAllCarousel} from '@/api/system/carousel'
 import axios from 'axios'
 
 const lineChartData = {
@@ -122,6 +127,10 @@ export default {
       this.res.vitaeCount = res.data.vitaeCount
     })
     this.getHotData()
+
+    listAllCarousel().then(res=>{
+      this.caroucelList=res.data
+    })
   },
   data() {
     return {
@@ -130,9 +139,11 @@ export default {
       day: new Date(),
       lineChartData: null,
       res: { demandList: [], hc: [], vitaeCount: [] },
-      companyInfo:{
-        title:"快度欢迎您的加入！",
-        slogan:"招最好的人，给最大的空间，看最后的结果，让优秀人才脱颖而出！",
+      companyInfo: {
+        title: '快度欢迎您的加入！',
+        slogan: '招最好的人，给最大的空间，看最后的结果，让优秀人才脱颖而出！'
+      },
+      caroucelList:{
       }
     }
   },
