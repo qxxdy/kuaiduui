@@ -103,10 +103,11 @@
         prop="vitaeAttach"
       >
         <template slot-scope="scope">
-          <el-link type="warning"
+          <el-link type="success"
                    :href="scope.row.vitaeAttach" target="_blank"
                    v-if="scope.row.vitaeAttach">
             简历附件
+            <i class="el-icon-view el-icon--right"></i>
           </el-link>
           <p v-else>未上传</p>
         </template>
@@ -157,6 +158,30 @@
       >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_post_type" :value="scope.row.intentionWilljob"/>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="招聘类别"
+        prop="recruitType"
+      >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.post_recruit_type" :value="scope.row.recruitType"/>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="招聘时间"
+        prop="recruitTime"
+      >
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="bottom">
+            <dict-tag v-if="scope.row.recruitTime" :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
+            <p v-else>社招无具体时间</p>
+            <div slot="reference" class="name-wrapper">
+              <p size="medium">...<i
+                class="el-icon-view el-icon--right"
+              ></i></p>
+            </div>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column
@@ -394,7 +419,7 @@ import { accByVitaeId, poolRecruitByVitaeId } from '@/api/flow/recruit'
 import { listAllPost } from '@/api/system/post'
 
 export default {
-  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type', 'edu_type'],
+  dicts: ['sys_normal_disable', 'sys_post_type', 'vitae_edu_max', 'vitae_edu_major', 'vitae_edu_form', 'vitae_job_type', 'vitae_intention_status', 'vitae_intention_salary', 'flow_recruit_status', 'city_type', 'edu_type','post_recruit_type','post_recruit_time'],
   data() {
     return {
       avatar: undefined,

@@ -149,10 +149,62 @@
         </el-form>
 
         <el-table v-loading="loading" :data="recruitList" @selection-change="handleSelectionChange">
+          <el-table-column
+            label="简历附件"
+            prop="vitaeAttach"
+          >
+            <template slot-scope="scope">
+              <el-link type="success"
+                       :href="scope.row.vitaeAttach" target="_blank"
+                       v-if="scope.row.vitaeAttach">
+                简历附件
+                <i class="el-icon-view el-icon--right"></i>
+              </el-link>
+              <p v-else>未上传</p>
+            </template>
+          </el-table-column>
           <el-table-column label="求职者" align="center" prop="personName"/>
           <el-table-column label="一面面试官" align="center" prop="userName1"/>
           <el-table-column label="二面面试官" align="center" prop="userName2"/>
           <el-table-column label="所求岗位" align="center" prop="postName"/>
+          <el-table-column
+            label="岗位类型"
+            prop="intentionWilljob"
+          >
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.sys_post_type" :value="scope.row.intentionWilljob"/>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="招聘类别"
+            prop="recruitType"
+          >
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.post_recruit_type" :value="scope.row.recruitType"/>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="招聘时间"
+            prop="recruitTime"
+          >
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="bottom">
+                <dict-tag v-if="scope.row.recruitTime" :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
+                <p v-else>社招无具体时间</p>
+                <div slot="reference" class="name-wrapper">
+                  <p size="medium">...<i
+                    class="el-icon-view el-icon--right"
+                  ></i></p>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column
+            sortable
+            label="投递时间"
+            prop="sendTime"
+          >
+          </el-table-column>
           <el-table-column label="一面记录" align="center" prop="skillRecord1">
             <template slot-scope="scope">
               <el-popover trigger="hover" placement="bottom">
@@ -301,7 +353,7 @@ import { getInfo } from '@/api/login'
 
 export default {
   name: 'Demand',
-  dicts: ['flow_demand_status', 'flow_recruit_status', 'post_recruit_type', 'post_recruit_time'],
+  dicts: ['flow_demand_status', 'flow_recruit_status', 'post_recruit_type', 'post_recruit_time','sys_post_type','post_recruit_type','post_recruit_time'],
   data() {
     return {
       // 遮罩层
@@ -399,6 +451,9 @@ export default {
       listRecruit(this.queryParams2).then(response => {
         this.recruitList = response.rows
         this.total2 = response.total
+        this.recruitList.forEach(i => {
+          i.vitaeAttach=i.vitaeAttach ? 'http://localhost' + process.env.VUE_APP_BASE_API + i.vitaeAttach:undefined
+        })
         this.loading = false
       })
     },
