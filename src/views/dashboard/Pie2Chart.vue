@@ -77,19 +77,25 @@ export default {
           },
           series: [
             {
-
+              avoidLabelOverlap: false,
               label: {
-                show: true
+                show: false,
+                position: 'center'
               },
               emphasis: {
                 label: {
-                  show: true
+                  show: true,
+                  fontSize: 40,
+                  fontWeight: 'bold'
                 }
+              },
+              labelLine: {
+                show: false
               },
               name: '登录次数统计',
               type: 'pie',
-              roseType: 'radius',
-              radius: [20, 140],
+              // roseType: 'radius',
+              radius: ['40%', '70%'],
               // radius: [15, 95],
               center: ['50%', '38%'],
               data: map,
