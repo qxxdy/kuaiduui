@@ -326,19 +326,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="一面" prop="userName1">
-              <el-select v-model="form.recruit1" placeholder="一面">
-                <el-option
-                  v-for="user in userList"
-                  :key="user.userId"
-                  :label="user.userName"
-                  :value="user.userId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="时间" prop="initTime">
-              <el-select v-model="form.recruit1" placeholder="一面">
+              <el-select v-model="form.recruit1" placeholder="请选择一面面试官">
                 <el-option
                   v-for="user in userList"
                   :key="user.userId"
@@ -352,7 +340,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="二面" prop="userName2">
-              <el-select v-model="form.recruit2" placeholder="二面">
+              <el-select v-model="form.recruit2" placeholder="请选择二面面试官">
                 <el-option
                   v-for="user in userList"
                   :key="user.userId"
@@ -557,9 +545,7 @@ export default {
     },
     handleUserList(vid) {
       getRecruitUserList(vid).then(res => {
-        console.log(">>>")
         this.userList = res.data
-        console.log(this.userList)
       })
     },
     submitForm() {

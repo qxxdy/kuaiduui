@@ -39,7 +39,7 @@
         >
         </el-date-picker>
         <el-divider direction="vertical"></el-divider>
-        <template v-if="form.birth>0">{{ form.age }} 岁</template>
+        <template v-if="form.birth>0||form.age">{{ form.age }} 岁</template>
       </el-form-item>
       <el-form-item label="性别" :label-width="formLabelWidth">
         <el-radio-group v-model="form.personGender">
