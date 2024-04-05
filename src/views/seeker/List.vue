@@ -79,13 +79,15 @@ export default {
   created() {
     let personPhone;
     this.getList()
+    let vitae={personPhone:undefined}
     getUserProfile().then(res => {
       this.personPhone = res.data.phonenumber
       if (!res.data.phonenumber) {
         this.$message.error(NO_PROFILE_ERR)
         return
       }
-      listVitae(this.personPhone).then(res => {
+      vitae.personPhone=this.personPhone
+      listVitae(vitae).then(res => {
         let data=res.rows[0]
         if (data.flowType&&data.flowType!==poolType) {
           this.$message.error("您当前简历已在流程中，请勿重复投递！")

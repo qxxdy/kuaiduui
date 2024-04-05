@@ -32,13 +32,15 @@ export default {
   created() {
     let personPhone
     let vitaeId
+    let vitae={personPhone:undefined}
     getUserProfile().then(res => {
       personPhone = res.data.phonenumber
       if (!personPhone) {
         this.$message.error(NO_PROFILE_ERR)
         return
       }
-      listVitae(personPhone).then(res => {
+      vitae.personPhone=personPhone
+      listVitae(vitae).then(res => {
         this.historys = res.rows
         this.setStepAndStatus(res.rows[0])
       })
