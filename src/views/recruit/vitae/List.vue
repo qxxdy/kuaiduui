@@ -95,7 +95,20 @@
       >
 
         <template slot-scope="scope">
-          <el-image style="width: 50px;" :src="scope.row.avatar"></el-image>
+          <image-preview style="width: 50px;" :src="scope.row.avatar"></image-preview>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="简历附件"
+        prop="vitaeAttach"
+      >
+        <template slot-scope="scope">
+          <el-link type="warning"
+                   :href="scope.row.vitaeAttach" target="_blank"
+                   v-if="scope.row.vitaeAttach">
+            简历附件
+          </el-link>
+          <p v-else>未上传</p>
         </template>
       </el-table-column>
       <el-table-column
@@ -284,7 +297,7 @@
               {{ desc.personReview }}
             </p>
             <div slot="reference" class="name-wrapper">
-              <p size="medium">{{ desc.personReview}}...<i
+              <p size="medium">{{ desc.personReview }}...<i
                 class="el-icon-view el-icon--right"
               ></i></p>
             </div>
@@ -445,7 +458,7 @@ export default {
         this.loading = false
         // this.options.img =  +
         this.demandList.forEach(i => {
-          i.avatar = 'http://localhost' + process.env.VUE_APP_BASE_API + i.avatar
+          i.vitaeAttach=i.vitaeAttach ? 'http://localhost' + process.env.VUE_APP_BASE_API + i.vitaeAttach:undefined
         })
         // console.log(this.demandList[0].avatar)
       })

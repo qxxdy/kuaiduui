@@ -9,6 +9,14 @@
       >
         <image-upload v-model="form.avatar" :limit="imgLimit"></image-upload>
       </el-form-item>
+
+      <el-form-item label="简历附件"
+                    prop="vitaeAttach"
+                    :label-width="formLabelWidth"
+      >
+        <file-upload v-model="form.vitaeAttach" :limit="1"></file-upload>
+      </el-form-item>
+
       <el-form-item label="姓名"
                     prop="personName"
                     :label-width="formLabelWidth"
@@ -227,6 +235,7 @@ export default {
       getVitaeByPhone(res.data.phonenumber).then(res=>{
         this.form.id=res.data.id
         this.form.avatar=res.data.avatar
+        this.form.vitaeAttach=res.data.vitaeAttach
         this.form.personName=res.data.personName
         this.form.personAddress=res.data.personAddress
         this.form.personHousehold=res.data.personHousehold
@@ -253,6 +262,7 @@ export default {
         id:undefined,
         practices: [{ value: '' }],
         avatar:undefined,
+        vitaeAttach:undefined,
         personName:undefined,
         personEmail:undefined,
         personPhone:undefined,
