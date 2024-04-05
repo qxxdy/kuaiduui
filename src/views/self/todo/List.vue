@@ -295,7 +295,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="评分" prop="score">
-                  <el-select v-model="form.score" placeholder="评分" :disabled="true">
+                  <el-select v-model="form.score" placeholder="评分" disabled>
                     <el-option
                       label="优秀"
                       value="S"
@@ -350,6 +350,7 @@
 import { accessDemand, denyDemand, listDemand } from '@/api/flow/demand'
 import { accessRecruit, accScore, listRecruit, poolRecruit } from '@/api/flow/recruit'
 import { getInfo } from '@/api/login'
+import { underline } from 'chalk'
 
 export default {
   name: 'Demand',
@@ -379,7 +380,12 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
-      form: { score: 'A' },
+      form: {
+        vitaeId:undefined,
+        skillRecord:undefined,
+        characterRecord:undefined,
+        score: undefined
+      },
       vitaeId: null,
       // 查询参数
       queryParams: {
@@ -465,6 +471,8 @@ export default {
     // 表单重置
     reset() {
       this.form = {}
+      this.assistScore1=undefined
+      this.assistScore2=undefined
       this.resetForm('form')
     },
     /** 搜索按钮操作 */
@@ -563,10 +571,11 @@ export default {
         this.form.score = 'B'
       } else if (t > 5 && t <= 8) {
         this.form.score = 'A'
-      } else if (t === 9 || t === 10) this.form.score = 'S'
+      } else if (t === 9 || t === 10) {
+        this.form.score = 'S'
+      }
       this.$message.success(`综合评分：${this.form.score}`)
-      this.assistScore1 = undefined
-      this.assistScore2 = undefined
+      this.$forceUpdate()
     }
   }
 }
