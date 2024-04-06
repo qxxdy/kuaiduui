@@ -54,7 +54,15 @@
           </el-table-column>
           <el-table-column label="招聘时间" align="center" prop="recruitTime">
             <template slot-scope="scope">
-              <dict-tag :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
+              <el-popover trigger="hover" placement="bottom">
+                <dict-tag v-if="scope.row.recruitTime" :options="dict.type.post_recruit_time" :value="scope.row.recruitTime"/>
+                <p v-else>社招无具体时间</p>
+                <div slot="reference" class="name-wrapper">
+                  <p size="medium">...<i
+                    class="el-icon-view el-icon--right"
+                  ></i></p>
+                </div>
+              </el-popover>
             </template>
           </el-table-column>
           <el-table-column label="需求人数" align="center" prop="postHc"/>
