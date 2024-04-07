@@ -64,7 +64,7 @@
     <el-table v-loading="loading" :data="carouselList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="标题" align="center" prop="titie" />
-      <el-table-column label="内容" align="center" prop="info" />
+<!--      <el-table-column label="内容" align="center" prop="info" />-->
       <el-table-column label="图片" align="center" prop="path" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.path" :width="50" :height="50"/>
@@ -104,9 +104,9 @@
         <el-form-item label="标题" prop="titie">
           <el-input v-model="form.titie" placeholder="请输入标题" />
         </el-form-item>
-        <el-form-item label="内容">
-          <editor v-model="form.info" :min-height="192"/>
-        </el-form-item>
+<!--        <el-form-item label="内容">-->
+<!--          <editor v-model="form.info" :min-height="192"/>-->
+<!--        </el-form-item>-->
         <el-form-item label="图片" prop="path">
           <image-upload :limit="1" v-model="form.path"/>
         </el-form-item>
@@ -149,7 +149,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         titie: null,
-        info: null,
+        // info: null,
         path: null
       },
       // 表单参数
