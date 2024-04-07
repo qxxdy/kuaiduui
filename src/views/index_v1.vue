@@ -14,6 +14,7 @@
          <image-preview :src="c.path" height="100%" width="100%"/>
         </el-carousel-item>
       </el-carousel>
+      <img src="https://img.alicdn.com/imgextra/i1/O1CN0191mbWP1JcwjKGERDN_!!6000000001050-2-tps-2880-1307.png" alt="join us" data-spm-anchor-id="0.0.0.i4.10103ae7GRnfLg" width="100%" height="100%">
 
     </div>
 
