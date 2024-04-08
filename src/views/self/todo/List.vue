@@ -174,6 +174,7 @@
           <el-table-column label="求职者" align="center" prop="personName"/>
           <el-table-column label="一面面试官" align="center" prop="userName1"/>
           <el-table-column label="二面面试官" align="center" prop="userName2"/>
+          <el-table-column label="部门名称" align="center" prop="deptName"/>
           <el-table-column label="所求岗位" align="center" prop="postName"/>
           <el-table-column
             label="岗位类型"

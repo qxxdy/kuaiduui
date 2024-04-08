@@ -88,7 +88,9 @@
     <el-table
       :data="demandList"
       style="width: 100%"
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column
         label="证件照"
         prop="avatar"
@@ -146,6 +148,11 @@
         <template slot-scope="scope">
           <dict-tag :options="dict.type.vitae_intention_salary" :value="scope.row.intentionWillsalary"/>
         </template>
+      </el-table-column>
+      <el-table-column
+        label="部门名称"
+        prop="deptName"
+      >
       </el-table-column>
       <el-table-column
         label="岗位名称"
@@ -238,7 +245,8 @@
           <dict-tag :options="dict.type.flow_recruit_status" :value="scope.row.flowType"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width"
+                       fixed="right">
         <template slot-scope="scope">
           <el-button type="text" @click="showInfo(scope.row)">查看简历</el-button>
 
@@ -609,7 +617,13 @@ export default {
       this.reset()
       this.getNoHcPostList()
       this.getUserList()
-    }
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.postId)
+      this.single = selection.length != 1
+      this.multiple = !selection.length
+    },
   }
 }
 </script>
