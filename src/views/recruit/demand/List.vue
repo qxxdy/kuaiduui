@@ -234,7 +234,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="岗位名称" prop="postId">
-          <el-select v-model="form.postId" placeholder="请选择岗位名称">
+          <el-select v-model="form.postId"
+                     placeholder="请选择岗位名称"
+                     filterable>
             <el-option
               v-for="post in noHcPostList"
               :key="post.postId"
