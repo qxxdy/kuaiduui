@@ -159,6 +159,16 @@
         prop="postName"
       >
       </el-table-column>
+      <el-table-column label="岗位状态" align="center">
+        <template slot-scope="scope">
+          <el-switch
+            disabled
+            v-model="scope.row.recruitStatus"
+            active-value="0"
+            inactive-value="1"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column
         label="岗位类型"
         prop="intentionWilljob"
@@ -240,6 +250,7 @@
       <el-table-column
         label="流转类别"
         prop="flowType"
+        fixed="right"
       >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.flow_recruit_status" :value="scope.row.flowType"/>
@@ -251,7 +262,7 @@
           <el-button type="text" @click="showInfo(scope.row)">查看简历</el-button>
 
 
-          <el-dropdown v-if="scope.row.flowType==='1'" size="mini"
+          <el-dropdown v-if="scope.row.flowType==='1'&&scope.row.recruitStatus==='0'" size="mini"
                        @command="(command) => handleCommand(command, scope.row)"
           >
             <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
@@ -261,7 +272,7 @@
             </el-dropdown-menu>
           </el-dropdown>
 
-          <el-dropdown v-else-if="scope.row.flowType==='5'" size="mini"
+          <el-dropdown v-else-if="scope.row.flowType==='5'&&scope.row.recruitStatus==='0'" size="mini"
                        @command="(command) => handleCommand(command, scope.row)"
           >
             <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
