@@ -1,0 +1,184 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=renderer content=webkit><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=icon href=/favicon.ico><title>KWAIDU ZHAOPIN</title><!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]--><style>html,
+    body,
+    #app {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+    .chromeframe {
+      margin: 0.2em 0;
+      background: #ccc;
+      color: #000;
+      padding: 0.2em 0;
+    }
+
+    #loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999999;
+    }
+
+    #loader {
+      display: block;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #FFF;
+      -webkit-animation: spin 2s linear infinite;
+      -ms-animation: spin 2s linear infinite;
+      -moz-animation: spin 2s linear infinite;
+      -o-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      z-index: 1001;
+    }
+
+    #loader:before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #FFF;
+      -webkit-animation: spin 3s linear infinite;
+      -moz-animation: spin 3s linear infinite;
+      -o-animation: spin 3s linear infinite;
+      -ms-animation: spin 3s linear infinite;
+      animation: spin 3s linear infinite;
+    }
+
+    #loader:after {
+      content: "";
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #FFF;
+      -moz-animation: spin 1.5s linear infinite;
+      -o-animation: spin 1.5s linear infinite;
+      -ms-animation: spin 1.5s linear infinite;
+      -webkit-animation: spin 1.5s linear infinite;
+      animation: spin 1.5s linear infinite;
+    }
+
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+
+    #loader-wrapper .loader-section {
+      position: fixed;
+      top: 0;
+      width: 51%;
+      height: 100%;
+      background: #7171C6;
+      z-index: 1000;
+      -webkit-transform: translateX(0);
+      -ms-transform: translateX(0);
+      transform: translateX(0);
+    }
+
+    #loader-wrapper .loader-section.section-left {
+      left: 0;
+    }
+
+    #loader-wrapper .loader-section.section-right {
+      right: 0;
+    }
+
+
+    .loaded #loader-wrapper .loader-section.section-left {
+      -webkit-transform: translateX(-100%);
+      -ms-transform: translateX(-100%);
+      transform: translateX(-100%);
+      -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+      transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+    }
+
+    .loaded #loader-wrapper .loader-section.section-right {
+      -webkit-transform: translateX(100%);
+      -ms-transform: translateX(100%);
+      transform: translateX(100%);
+      -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+      transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+    }
+
+    .loaded #loader {
+      opacity: 0;
+      -webkit-transition: all 0.3s ease-out;
+      transition: all 0.3s ease-out;
+    }
+
+    .loaded #loader-wrapper {
+      visibility: hidden;
+      -webkit-transform: translateY(-100%);
+      -ms-transform: translateY(-100%);
+      transform: translateY(-100%);
+      -webkit-transition: all 0.3s 1s ease-out;
+      transition: all 0.3s 1s ease-out;
+    }
+
+    .no-js #loader-wrapper {
+      display: none;
+    }
+
+    .no-js h1 {
+      color: #222222;
+    }
+
+    #loader-wrapper .load_title {
+      font-family: 'Open Sans';
+      color: #FFF;
+      font-size: 19px;
+      width: 100%;
+      text-align: center;
+      z-index: 9999999999999;
+      position: absolute;
+      top: 60%;
+      opacity: 1;
+      line-height: 30px;
+    }
+
+    #loader-wrapper .load_title span {
+      font-weight: normal;
+      font-style: italic;
+      font-size: 13px;
+      color: #FFF;
+      opacity: 0.5;
+    }</style><link href=/static/css/chunk-libs.ea078ece.css rel=stylesheet><link href=/static/css/app.23abadef.css rel=stylesheet></head><body><div id=app><div id=loader-wrapper><div id=loader></div><div class="loader-section section-left"></div><div class="loader-section section-right"></div><div class=load_title>正在加载系统资源，请耐心等待</div></div></div><script>(function(c){function e(e){for(var u,d,a=e[0],k=e[1],t=e[2],b=0,r=[];b<a.length;b++)d=a[b],Object.prototype.hasOwnProperty.call(f,d)&&f[d]&&r.push(f[d][0]),f[d]=0;for(u in k)Object.prototype.hasOwnProperty.call(k,u)&&(c[u]=k[u]);o&&o(e);while(r.length)r.shift()();return h.push.apply(h,t||[]),n()}function n(){for(var c,e=0;e<h.length;e++){for(var n=h[e],u=!0,d=1;d<n.length;d++){var a=n[d];0!==f[a]&&(u=!1)}u&&(h.splice(e--,1),c=k(k.s=n[0]))}return c}var u={},d={runtime:0},f={runtime:0},h=[];function a(c){return k.p+"static/js/"+({}[c]||c)+"."+{"chunk-005cb0c7":"88c51319","chunk-00d283cc":"596d70a4","chunk-04621586":"ff2c959f","chunk-071248ab":"a9e86141","chunk-096012a6":"3b13d7d8","chunk-e193223c":"fdc59ffd","chunk-190c8636":"0dac2932","chunk-1d7d97ec":"4ac1fa59","chunk-146bc166":"e4c73851","chunk-2b02de32":"3b8a4f64","chunk-2d452c62":"2d682361","chunk-2f972202":"0a6765f0","chunk-32cc5b0e":"cb89189b","chunk-45e97b1c":"9f5a8741","chunk-5e724405":"99e390ee","chunk-60795a9c":"4f05baf5","chunk-6b65981c":"222b87fe","chunk-5a819429":"9b3ff3cc","chunk-5dfa2311":"2e832dc2","chunk-7698c8e6":"a56c0b8d","chunk-8e66be9a":"51de2619","chunk-9067c440":"cce9d657","chunk-d4fc7fc8":"9707a4f7","chunk-1e71eef1":"f2593f1e","chunk-2104479c":"a87d5ec9","chunk-210ca3e9":"2fcaedfd","chunk-210ce324":"fde82fd5","chunk-22333f62":"c17b0322","chunk-26880762":"facac977","chunk-2d0b1626":"e4edbfc8","chunk-2d0b2b28":"9e271da6","chunk-38095322":"80065a4e","chunk-2d0bce05":"885a880b","chunk-2d0da2ea":"ad2116d5","chunk-2d0f012d":"ddeb06bb","chunk-2d20955d":"fa1651e5","chunk-2d212b99":"eadf8bea","chunk-efdded28":"16d813e0","chunk-31eae13f":"5bb8bb07","chunk-3339808c":"41e76577","chunk-0d5b0085":"69e7fd31","chunk-60006966":"786e10c5","chunk-527d2176":"1c2cebe1","chunk-2d21a3bb":"b78e776d","chunk-2d22252c":"a6693819","chunk-2d230898":"9366b229","chunk-3af8296d":"c92b2621","chunk-3b69bc00":"bcf97e26","chunk-3c64afac":"f03f5109","chunk-401f20ba":"11f60f5f","chunk-46f2cf5c":"985a51c8","chunk-48df6238":"8b83130d","chunk-4c9ace2d":"db25e4e7","chunk-582b2a7a":"c71ba950","chunk-5b83c289":"ea071463","chunk-7fa21b9b":"d96ef8ef","chunk-5bb73842":"fee7f0d7","chunk-129231a3":"b4918ee6","chunk-2d0de3b1":"047cefdc","chunk-3a083b9c":"3c278328","chunk-3b0424d2":"8ab2c004","chunk-cf362bea":"e3806302","chunk-60c0ee69":"1aa02189","chunk-6746b265":"84a8388c","chunk-79d56bbb":"9ec99949","chunk-7e203972":"32983f78","chunk-8475fe10":"dfa8f7e1","chunk-8579d4da":"720ca98f","chunk-85bae964":"622b151a","chunk-8ee3fc10":"d305c58d","chunk-914f0472":"2079bcfb","chunk-95b6e104":"e27291c5","chunk-96f51fee":"b26c2a6a","chunk-a80778e4":"8ea534a0","chunk-aee1be5c":"716202b1","chunk-d19c1a98":"6c4a8749","chunk-d750e9a4":"77c09ba4","chunk-e1a6d904":"dc60e4a7","chunk-e648d5fe":"36292e54","chunk-e946381e":"1b237337","chunk-eb6eba16":"92e00a83","chunk-f003abc8":"d8bc1be0","chunk-2288d396":"564dc24b","chunk-58ad8705":"b5d22072"}[c]+".js"}function k(e){if(u[e])return u[e].exports;var n=u[e]={i:e,l:!1,exports:{}};return c[e].call(n.exports,n,n.exports,k),n.l=!0,n.exports}k.e=function(c){var e=[],n={"chunk-00d283cc":1,"chunk-5a819429":1,"chunk-5dfa2311":1,"chunk-2104479c":1,"chunk-38095322":1,"chunk-3339808c":1,"chunk-527d2176":1,"chunk-3c64afac":1,"chunk-46f2cf5c":1,"chunk-4c9ace2d":1,"chunk-5b83c289":1,"chunk-5bb73842":1,"chunk-cf362bea":1,"chunk-60c0ee69":1,"chunk-6746b265":1,"chunk-914f0472":1,"chunk-95b6e104":1,"chunk-a80778e4":1,"chunk-d750e9a4":1,"chunk-e648d5fe":1,"chunk-2288d396":1,"chunk-58ad8705":1};d[c]?e.push(d[c]):0!==d[c]&&n[c]&&e.push(d[c]=new Promise((function(e,n){for(var u="static/css/"+({}[c]||c)+"."+{"chunk-005cb0c7":"31d6cfe0","chunk-00d283cc":"2884a2cc","chunk-04621586":"31d6cfe0","chunk-071248ab":"31d6cfe0","chunk-096012a6":"31d6cfe0","chunk-e193223c":"31d6cfe0","chunk-190c8636":"31d6cfe0","chunk-1d7d97ec":"31d6cfe0","chunk-146bc166":"31d6cfe0","chunk-2b02de32":"31d6cfe0","chunk-2d452c62":"31d6cfe0","chunk-2f972202":"31d6cfe0","chunk-32cc5b0e":"31d6cfe0","chunk-45e97b1c":"31d6cfe0","chunk-5e724405":"31d6cfe0","chunk-60795a9c":"31d6cfe0","chunk-6b65981c":"31d6cfe0","chunk-5a819429":"12a4e87a","chunk-5dfa2311":"12d2975a","chunk-7698c8e6":"31d6cfe0","chunk-8e66be9a":"31d6cfe0","chunk-9067c440":"31d6cfe0","chunk-d4fc7fc8":"31d6cfe0","chunk-1e71eef1":"31d6cfe0","chunk-2104479c":"0a7c4ad5","chunk-210ca3e9":"31d6cfe0","chunk-210ce324":"31d6cfe0","chunk-22333f62":"31d6cfe0","chunk-26880762":"31d6cfe0","chunk-2d0b1626":"31d6cfe0","chunk-2d0b2b28":"31d6cfe0","chunk-38095322":"f59a1d86","chunk-2d0bce05":"31d6cfe0","chunk-2d0da2ea":"31d6cfe0","chunk-2d0f012d":"31d6cfe0","chunk-2d20955d":"31d6cfe0","chunk-2d212b99":"31d6cfe0","chunk-efdded28":"31d6cfe0","chunk-31eae13f":"31d6cfe0","chunk-3339808c":"6dfe926d","chunk-0d5b0085":"31d6cfe0","chunk-60006966":"31d6cfe0","chunk-527d2176":"c5292c00","chunk-2d21a3bb":"31d6cfe0","chunk-2d22252c":"31d6cfe0","chunk-2d230898":"31d6cfe0","chunk-3af8296d":"31d6cfe0","chunk-3b69bc00":"31d6cfe0","chunk-3c64afac":"4e8637e7","chunk-401f20ba":"31d6cfe0","chunk-46f2cf5c":"17fbdb6b","chunk-48df6238":"31d6cfe0","chunk-4c9ace2d":"a00b75fd","chunk-582b2a7a":"31d6cfe0","chunk-5b83c289":"ce2a2394","chunk-7fa21b9b":"31d6cfe0","chunk-5bb73842":"84f98409","chunk-129231a3":"31d6cfe0","chunk-2d0de3b1":"31d6cfe0","chunk-3a083b9c":"31d6cfe0","chunk-3b0424d2":"31d6cfe0","chunk-cf362bea":"f9dc4fa2","chunk-60c0ee69":"d2604661","chunk-6746b265":"3e10cd59","chunk-79d56bbb":"31d6cfe0","chunk-7e203972":"31d6cfe0","chunk-8475fe10":"31d6cfe0","chunk-8579d4da":"31d6cfe0","chunk-85bae964":"31d6cfe0","chunk-8ee3fc10":"31d6cfe0","chunk-914f0472":"fde865f7","chunk-95b6e104":"0726536f","chunk-96f51fee":"31d6cfe0","chunk-a80778e4":"db631dbc","chunk-aee1be5c":"31d6cfe0","chunk-d19c1a98":"31d6cfe0","chunk-d750e9a4":"5df5e1c5","chunk-e1a6d904":"31d6cfe0","chunk-e648d5fe":"bbc9fa95","chunk-e946381e":"31d6cfe0","chunk-eb6eba16":"31d6cfe0","chunk-f003abc8":"31d6cfe0","chunk-2288d396":"cae5fd31","chunk-58ad8705":"cae5fd31"}[c]+".css",f=k.p+u,h=document.getElementsByTagName("link"),a=0;a<h.length;a++){var t=h[a],b=t.getAttribute("data-href")||t.getAttribute("href");if("stylesheet"===t.rel&&(b===u||b===f))return e()}var r=document.getElementsByTagName("style");for(a=0;a<r.length;a++){t=r[a],b=t.getAttribute("data-href");if(b===u||b===f)return e()}var o=document.createElement("link");o.rel="stylesheet",o.type="text/css",o.onload=e,o.onerror=function(e){var u=e&&e.target&&e.target.src||f,h=new Error("Loading CSS chunk "+c+" failed.\n("+u+")");h.code="CSS_CHUNK_LOAD_FAILED",h.request=u,delete d[c],o.parentNode.removeChild(o),n(h)},o.href=f;var i=document.getElementsByTagName("head")[0];i.appendChild(o)})).then((function(){d[c]=0})));var u=f[c];if(0!==u)if(u)e.push(u[2]);else{var h=new Promise((function(e,n){u=f[c]=[e,n]}));e.push(u[2]=h);var t,b=document.createElement("script");b.charset="utf-8",b.timeout=120,k.nc&&b.setAttribute("nonce",k.nc),b.src=a(c);var r=new Error;t=function(e){b.onerror=b.onload=null,clearTimeout(o);var n=f[c];if(0!==n){if(n){var u=e&&("load"===e.type?"missing":e.type),d=e&&e.target&&e.target.src;r.message="Loading chunk "+c+" failed.\n("+u+": "+d+")",r.name="ChunkLoadError",r.type=u,r.request=d,n[1](r)}f[c]=void 0}};var o=setTimeout((function(){t({type:"timeout",target:b})}),12e4);b.onerror=b.onload=t,document.head.appendChild(b)}return Promise.all(e)},k.m=c,k.c=u,k.d=function(c,e,n){k.o(c,e)||Object.defineProperty(c,e,{enumerable:!0,get:n})},k.r=function(c){"undefined"!==typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(c,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(c,"__esModule",{value:!0})},k.t=function(c,e){if(1&e&&(c=k(c)),8&e)return c;if(4&e&&"object"===typeof c&&c&&c.__esModule)return c;var n=Object.create(null);if(k.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:c}),2&e&&"string"!=typeof c)for(var u in c)k.d(n,u,function(e){return c[e]}.bind(null,u));return n},k.n=function(c){var e=c&&c.__esModule?function(){return c["default"]}:function(){return c};return k.d(e,"a",e),e},k.o=function(c,e){return Object.prototype.hasOwnProperty.call(c,e)},k.p="/",k.oe=function(c){throw console.error(c),c};var t=window["webpackJsonp"]=window["webpackJsonp"]||[],b=t.push.bind(t);t.push=e,t=t.slice();for(var r=0;r<t.length;r++)e(t[r]);var o=b;n()})([]);</script><script src=/static/js/chunk-elementUI.8656a34f.js></script><script src=/static/js/chunk-libs.fc741d54.js></script><script src=/static/js/app.120062c9.js></script></body></html>
