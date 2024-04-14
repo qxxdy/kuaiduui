@@ -50,6 +50,13 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
+        toolbox: {
+          feature: {
+            dataView: { readOnly: true },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         title:{text:"23届学生调研样本学历分布"},
         legend: {
           left: 'center',

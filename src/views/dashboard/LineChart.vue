@@ -21,7 +21,7 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '300px'
     },
     autoResize: {
       type: Boolean,
@@ -69,7 +69,7 @@ export default {
       this.chart.setOption({
         xAxis: {
           data: demandList,
-          boundaryGap: false,
+          boundaryGap: true,
           axisTick: {
             show: false
           }

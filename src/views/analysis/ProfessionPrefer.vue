@@ -63,6 +63,13 @@ export default {
           },
           formatter: '{b} : 整体{c}% 硕士{c1}% 本科{c2}%'
         },
+        toolbox: {
+          feature: {
+            dataView: { readOnly: true },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         legend: {},
         grid: {
           left: '3%',

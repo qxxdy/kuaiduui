@@ -87,6 +87,13 @@ export default {
           padding: [5, 10],
           formatter: '{b} : 期望{c}% 实际{c1}%'
         },
+        toolbox: {
+          feature: {
+            dataView: { readOnly: true },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         yAxis: {
           axisTick: {
             show: false

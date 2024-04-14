@@ -63,6 +63,13 @@ export default {
           },
           formatter: '{b} : {c}%'
         },
+        toolbox: {
+          feature: {
+            dataView: { readOnly: true },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         xAxis: {
           type: 'category',
           data: ['北京市', '深圳市', '上海市', '广州市', '杭州市', '南京市', '成都市', '西安市', '合肥市', '武汉市']

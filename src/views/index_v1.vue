@@ -7,14 +7,18 @@
       <el-divider></el-divider>
       <el-carousel type="card"
                    height="400px"
-                   indicator-position="outside">
-       <el-carousel-item v-for="c in caroucelList"
-                         :key="c.id"
-                         :label="c.titie">
-         <image-preview :src="c.path" height="100%" width="100%"/>
+                   indicator-position="outside"
+      >
+        <el-carousel-item v-for="c in caroucelList"
+                          :key="c.id"
+                          :label="c.titie"
+        >
+          <image-preview :src="c.path" height="100%" width="100%"/>
         </el-carousel-item>
       </el-carousel>
-      <img src="https://img.alicdn.com/imgextra/i1/O1CN0191mbWP1JcwjKGERDN_!!6000000001050-2-tps-2880-1307.png" alt="join us" data-spm-anchor-id="0.0.0.i4.10103ae7GRnfLg" width="100%" height="100%">
+      <img src="https://img.alicdn.com/imgextra/i1/O1CN0191mbWP1JcwjKGERDN_!!6000000001050-2-tps-2880-1307.png"
+           alt="join us" data-spm-anchor-id="0.0.0.i4.10103ae7GRnfLg" width="100%" height="100%"
+      >
 
     </div>
 
@@ -22,20 +26,7 @@
       <!--top卡片-->
       <panel-group @handleSetLineChartData="handleSetLineChartData"/>
 
-      <!--bottom-->
       <el-row :gutter="32">
-        <el-col :xs="24" :sm="24" :lg="8">
-          <div class="chart-wrapper">
-            <pie-chart/>
-          </div>
-        </el-col>
-
-        <el-col :xs="24" :sm="24" :lg="8">
-          <div class="chart-wrapper">
-            <pie2-chart/>
-          </div>
-        </el-col>
-
         <el-col size="small" :xs="24" :sm="24" :lg="8">
           <!--          <pie-chart/>-->
           <div class="chart-wrapper">
@@ -67,13 +58,36 @@
             </template>
           </div>
         </el-col>
+        <el-col :xs="24" :sm="24" :lg="8">
+          <div class="chart-wrapper">
+            <funnel-chart></funnel-chart>
+          </div>
+        </el-col>
 
+        <el-col :xs="24" :sm="24" :lg="8">
+          <div class="chart-wrapper">
+            <pie2-chart/>
+          </div>
+        </el-col>
+      </el-row>
+
+      <!--bottom-->
+      <el-row :gutter="32">
+        <el-col :xs="24" :sm="24" :lg="8">
+          <div class="chart-wrapper">
+            <pie-chart/>
+          </div>
+        </el-col>
+
+        <el-col :xs="24" :sm="24" :lg="16">
+          <div class="chart-wrapper">
+            <line-chart :chart-data="res"/>
+          </div>
+        </el-col>
       </el-row>
 
       <!--折线图-->
-      <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-        <line-chart :chart-data="res"/>
-      </el-row>
+
     </div>
 
 
@@ -87,8 +101,9 @@ import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
 import Pie2Chart from './dashboard/Pie2Chart'
 import BarChart from './dashboard/BarChart'
+import FunnelChart from './dashboard/FunnelChart'
 import { getChartData } from '@/api/analysis'
-import {listAllCarousel} from '@/api/system/carousel'
+import { listAllCarousel } from '@/api/system/carousel'
 import axios from 'axios'
 
 const lineChartData = {
@@ -119,7 +134,8 @@ export default {
     RaddarChart,
     PieChart,
     Pie2Chart,
-    BarChart
+    BarChart,
+    FunnelChart
   },
   created() {
     getChartData().then(res => {
@@ -129,8 +145,8 @@ export default {
     })
     this.getHotData()
 
-    listAllCarousel().then(res=>{
-      this.caroucelList=res.data
+    listAllCarousel().then(res => {
+      this.caroucelList = res.data
     })
   },
   data() {
@@ -144,8 +160,7 @@ export default {
         title: '快度欢迎您的加入！',
         slogan: '招最好的人，给最大的空间，看最后的结果，让优秀人才脱颖而出！'
       },
-      caroucelList:{
-      }
+      caroucelList: {}
     }
   },
   methods: {
