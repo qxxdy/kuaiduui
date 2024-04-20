@@ -69,10 +69,14 @@ export default {
       this.chart.setOption({
         xAxis: {
           data: demandList,
-          boundaryGap: true,
+          boundaryGap: false,
           axisTick: {
             show: false
-          }
+          },
+          axisLabel:{
+            show:true,
+            interval:0
+          },
         },
         grid: {
           left: 10,

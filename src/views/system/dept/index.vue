@@ -26,14 +26,13 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5" v-if="false">
+      <el-col :span="1.5">
         <el-button
           type="primary"
           plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:dept:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -49,7 +48,7 @@
     </el-row>
 
     <el-row>
-      <el-col :span="20" :offset="4">
+      <el-col>
         <el-table
           v-if="refreshTable"
           v-loading="loading"
@@ -70,7 +69,7 @@
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width" v-if="false">
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -124,7 +123,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="false">
           <el-col :span="12">
             <el-form-item label="负责人" prop="leader">
               <el-input v-model="form.leader" placeholder="请输入负责人" maxlength="20" />
@@ -137,7 +136,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="12" v-if="false">
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>

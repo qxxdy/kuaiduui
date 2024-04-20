@@ -29,6 +29,20 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="招聘状态" prop="recruitStatus">
+        <el-select v-model="queryParams.recruitStatus" placeholder="招聘状态" clearable>
+          <el-option
+            key="0"
+            label="招聘"
+            value="0"
+          />
+          <el-option
+            key="1"
+            label="关闭"
+            value="1"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="招聘类型" prop="recruitType">
         <el-select clearable v-model="queryParams.recruitType" placeholder="请选择招聘类型">
           <el-option
@@ -137,16 +151,18 @@
         </template>
       </el-table-column>
       <el-table-column
+        sortable
         label="招聘人数"
         prop="postHc"
       >
       </el-table-column>
       <el-table-column
+        sortable
         label="求职人数"
         prop="vitaeCount"
       >
       </el-table-column>
-      <el-table-column label="状态" align="center">
+      <el-table-column label="招聘状态" align="center">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.recruitStatus"
@@ -376,7 +392,8 @@ export default {
         deptId: undefined,
         status: undefined,
         recruitType: undefined,
-        recruitTime: undefined
+        recruitTime: undefined,
+        recruitStatus:undefined
       },
       // 表单参数
       form: {},

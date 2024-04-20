@@ -138,12 +138,15 @@ export default {
     FunnelChart
   },
   created() {
+    this.getHotData()
+  },
+  mounted(){
+
     getChartData().then(res => {
       this.res.demandList = res.data.demandList
       this.res.hc = res.data.hc
       this.res.vitaeCount = res.data.vitaeCount
     })
-    this.getHotData()
 
     listAllCarousel().then(res => {
       this.caroucelList = res.data

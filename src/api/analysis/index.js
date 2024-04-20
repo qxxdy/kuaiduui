@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
-
+/* 系统分析 */
+// 登录分析饼图
 export function getLoginChartData() {
   return request({
     url: '/analysis/index/getLoginChartData',
