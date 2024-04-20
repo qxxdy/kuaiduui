@@ -72,6 +72,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
+          v-has-role="['rd','hr','pm']"
           type="primary"
           plain
           icon="el-icon-plus"
@@ -186,6 +187,7 @@
             type="text"
             icon="el-icon-view"
             @click="handleVitae(scope.row)"
+            v-has-role="['boss']"
           >详情
           </el-button>
         </template>

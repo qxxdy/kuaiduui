@@ -159,7 +159,7 @@
         prop="postName"
       >
       </el-table-column>
-      <el-table-column label="岗位状态" align="center">
+      <el-table-column label="招聘状态" align="center">
         <template slot-scope="scope">
           <el-switch
             disabled

@@ -90,6 +90,18 @@
               </el-popover>
             </template>
           </el-table-column>
+          <el-table-column
+            sortable
+            label="申请时间"
+            prop="initTime"
+          >
+          </el-table-column>
+          <el-table-column
+            sortable
+            label="处理时间"
+            prop="endTime"
+          >
+          </el-table-column>
           <el-table-column label="审批状态" align="center" prop="flowType">
             <template slot-scope="scope">
               <dict-tag :options="dict.type.flow_demand_status" :value="scope.row.flowType"/>
