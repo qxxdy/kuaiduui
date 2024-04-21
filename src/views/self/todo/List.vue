@@ -3,7 +3,7 @@
     <el-tabs tab-position="right" style="height: 500px;">
 
       <!--需求待办-->
-      <el-tab-pane>
+      <el-tab-pane v-if="isHr">
         <span slot="label">
           需求待办
           <el-badge v-if="total>0" :value="total" class="item"/>
@@ -450,7 +450,8 @@ export default {
         ]
       },
       assistScore1: undefined,
-      assistScore2: undefined
+      assistScore2: undefined,
+      isHr:this.$auth.hasRole('hr')
     }
   },
   created() {
