@@ -36,14 +36,19 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span v-if="d.postHc>=10">🔥</span>
-            <span><b>{{ d.postName }}</b></span>
+            <span>
+              <b>{{ d.postName }}</b>
+              <el-divider direction="vertical"></el-divider>
+              <dict-tag style="display: inline" :options="dict.type.post_recruit_type" :value="d.recruitType"/>
+              <el-divider direction="vertical"></el-divider>
+              <dict-tag style="display: inline" :options="dict.type.sys_post_type" :value="d.postType"/>
+            </span>
             <el-button
               v-if="isCan"
               style="float: right; padding: 3px 0"
               type="text"
               @click="handleAdd(d)"
             >
-              <dict-tag :options="dict.type.sys_post_type" :value="d.postType"/>
               投递
             </el-button>
           </div>
@@ -69,28 +74,28 @@ import ImageUpload from '../../components/ImageUpload'
 import { getUserProfile } from '@/api/system/user'
 import { sendVitaeToPost } from '@/api/recruit/vitae'
 import { listVitae } from '@/api/recruit/vitae'
-import {poolType,NO_PROFILE_ERR} from '@/const'
+import { poolType, NO_PROFILE_ERR } from '@/const'
 
 export default {
-  dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type'],
+  dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type','post_recruit_type'],
   components: {
     ImageUpload
   },
   created() {
-    let personPhone;
+    let personPhone
     this.getList()
-    let vitae={personPhone:undefined}
+    let vitae = { personPhone: undefined }
     getUserProfile().then(res => {
       this.personPhone = res.data.phonenumber
       if (!res.data.phonenumber) {
         this.$message.error(NO_PROFILE_ERR)
         return
       }
-      vitae.personPhone=this.personPhone
+      vitae.personPhone = this.personPhone
       listVitae(vitae).then(res => {
-        let data=res.rows[0]
-        if (data.flowType&&data.flowType!==poolType) {
-          this.$message.error("您当前简历已在流程中，请勿重复投递！")
+        let data = res.rows[0]
+        if (data.flowType && data.flowType !== poolType) {
+          this.$message.error('您当前简历已在流程中，请勿重复投递！')
           this.isCan = false
           return
         }
@@ -132,7 +137,7 @@ export default {
     },
     handleAdd(d) {
       let postId = d.postId
-      let personPhone=this.personPhone
+      let personPhone = this.personPhone
       if (!personPhone) {
         this.$message.error(NO_PROFILE_ERR)
         return
