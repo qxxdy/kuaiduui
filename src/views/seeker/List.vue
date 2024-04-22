@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-editor-container">
 
-    <el-select v-model="queryParams.postType" placeholder="岗位类别" clearable>
+    <el-select multiple
+               v-model="queryParams.postTypeList"
+               placeholder="岗位类别" clearable>
       <el-option
         v-for="dict in dict.type.sys_post_type"
         :key="dict.value"
@@ -9,7 +11,18 @@
         :value="dict.value"
       />
     </el-select>
-    <el-input placeholder="请输入岗位名称" v-model="queryParams.postName" class="input-with-select">
+    <el-divider direction="vertical"></el-divider>
+    <el-select multiple
+               v-model="queryParams.deptIdList"
+               placeholder="所在城市" clearable>
+      <el-option
+        v-for="dept in deptList"
+        :key="dept.deptId"
+        :value="dept.deptId"
+        :label="dept.deptName"
+      />
+    </el-select>
+    <el-input placeholder="请输入岗位名称" v-model="queryParams.postName" class="inline-input">
       <el-button
         slot="append"
         icon="el-icon-search"
@@ -38,6 +51,8 @@
             <span v-if="d.postHc>=10">🔥</span>
             <span>
               <b>{{ d.postName }}</b>
+              -
+              {{d.deptName}}
               <el-divider direction="vertical"></el-divider>
               <dict-tag style="display: inline" :options="dict.type.post_recruit_type" :value="d.recruitType"/>
               <el-divider direction="vertical"></el-divider>
@@ -75,6 +90,7 @@ import { getUserProfile } from '@/api/system/user'
 import { sendVitaeToPost } from '@/api/recruit/vitae'
 import { listVitae } from '@/api/recruit/vitae'
 import { poolType, NO_PROFILE_ERR } from '@/const'
+import { listSubDept } from '@/api/system/dept'
 
 export default {
   dicts: ['sys_post_type', 'sys_user_sex', 'vitae_edu_max', 'vitae_edu_form', 'vitae_edu_major', 'vitae_intention_status', 'vitae_intention_salary', 'city_type', 'edu_type','post_recruit_type'],
@@ -102,6 +118,9 @@ export default {
         this.vitaeInfo = res.data
       })
     })
+    listSubDept().then(res => {
+      this.deptList = res.data
+    })
   },
   data() {
     return {
@@ -112,12 +131,14 @@ export default {
         pageNum: 1,
         pageSize: 5,
         postName: undefined,
-        postType: undefined
+        postTypeList: undefined,
+        deptIdList: undefined
       },
       personPhone: undefined,
       postId: undefined,
       isCan: true,
-      vitaeInfo: {}
+      vitaeInfo: {},
+      deptList:[]
     }
   },
   methods: {
