@@ -269,7 +269,7 @@ export default {
         personGender: undefined,
         personAddress:'1',
         personHousehold: '1',
-        personEduMax: '1',
+        personEduMax: '5',
         personEduForm: '1',
         personEduName: '1',
         personEduMajor: '1',
